@@ -1,0 +1,22 @@
+#!/bin/sh
+
+device="$1"
+action="$2"
+value="$3"
+
+cur_bright="$(xrandr --verbose --current | grep "${device}" -A 5 | tail -n 1)"
+cur_bright="${cur_bright#* }"
+
+if [ "${action}" = "up" ]; then
+	new_bright="$(echo "${cur_bright} + ${value}" | bc)"
+else
+	new_bright="$(echo "${cur_bright} - ${value}" | bc)"
+fi
+
+if [ "$(echo "${new_bright} > 1" | bc)" = "1" ]; then
+	new_bright="1"
+elif [ "$(echo "${new_bright} < 0.05" | bc)" = "1" ]; then
+	new_bright="0.05"
+fi
+
+xrandr --output "${device}" --brightness "${new_bright}"

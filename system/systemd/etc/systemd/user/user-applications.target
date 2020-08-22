@@ -1,0 +1,4 @@
+[Unit]
+Description=Active when startx is called
+Requires=default.target
+After=default.target

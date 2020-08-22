@@ -1,0 +1,17 @@
+button6
+	xte 'key XF86AudioLowerVolume'
+
+button7
+	xte 'key XF86AudioRaiseVolume'
+
+XF86AudioLowerVolume
+	volctl PCH Master 3%-
+
+XF86AudioRaiseVolume
+	volctl PCH Master 3%+
+
+super + bracketleft
+	brightctl DP-2 down 0.05
+
+super + bracketright
+	brightctl DP-2 up 0.05
