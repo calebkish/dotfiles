@@ -13,14 +13,7 @@ compinit
 # End of lines added by compinstall
 
 
-#export PS1="%B%F{172}%1d%f%b %# "
+alias ls='ls --color=auto'
+alias ll='ls -al'
 
-PROMPT='%B%F{246}%1~%f %#%b '
-autoload -Uz vcs_info
-precmd_vcs_info() { vcs_info }
-precmd_functions+=( precmd_vcs_info )
-setopt prompt_subst
-RPROMPT=\$vcs_info_msg_0_
-zstyle ':vcs_info:git:*' formats '%F{240}(%b)%r%f'
-zstyle ':vcs_info:*' enable git
-
+PROMPT='%B%1~%f %#%b '
