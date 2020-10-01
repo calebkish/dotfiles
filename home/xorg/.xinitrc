@@ -9,7 +9,7 @@ fi
 
 xrdb -merge ~/.Xresources
 remaps &
-feh --bg-scale ~/.config/wall.jpg
+feh --bg-scale ~/.config/wall2.jpg
 compton --config ~/.config/compton/compton.conf &
 unclutter --timeout 2 &
 systemctl --user start user-applications.target

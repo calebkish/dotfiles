@@ -12,47 +12,68 @@
 #       }
 #}
 
-pcm.dmixed {
-        type dmix
-        ipc_key 1024
-        slave {
-                pcm "hw:PCH,0"
-                period_time 0
-                periods 0
-                period_size 1024
-                buffer_size 8192
-                rate 48000
-                channels 2
-        }
-}
-
-pcm.dsnooped {
-        type dsnoop
-        ipc_key 1027
-        slave {
-                pcm "hw:Device,0"
-                period_time 0
-                periods 0
-                period_size 1024
-                buffer_size 8192
-                rate 48000
-                channels 2
-        }
-}
-
-pcm.asymed {
-        type asym
-        playback.pcm "dmixed"
-        capture.pcm "dsnooped"
-}
-
-pcm.!default {
-        type plug
-        slave.pcm "asymed"
-}
-
-# Enable dmix - enables multiple applications to output sound at the same time
-pcm.dsp {
-        type plug
-        slave.pcm "dmix"
-}
+#pcm.intel {
+#	type dmix
+#	ipc_key 1024
+#	slave {
+#		pcm "hw:PCH,0"
+#		#period_time 0
+#		#periods 0
+#		#period_size 1024
+#		#buffer_size 8192
+#		rate 48000
+#		channels 2
+#	}
+#}
+#
+#pcm.blueyeti {
+#	type dsnoop
+#	ipc_key 1027
+#	slave {
+#		pcm "hw:Device,0"
+#		#period_time 0
+#		#periods 0
+#		#period_size 1024
+#		#buffer_size 8192
+#		rate 48000
+#		channels 2
+#	}
+#}
+#
+#pcm.nvidia {
+#	type dmix
+#	ipc_key 1028
+#	slave {
+#		pcm "hw:NVidia,7"
+#		#period_time 0
+#		#periods 0
+#		#period_size 1024
+#		#buffer_size 8192
+#		rate 48000
+#		channels 2
+#	}
+#}
+#
+#pcm.nvidia_vol {
+#	type softvol
+#	slave.pcm "nvidia"
+#	control.name "SoftMaster Playback Volume"
+#	control.card 0
+#}
+#
+#pcm.asymed {
+#	type asym
+#	playback.pcm "intel"
+#	capture.pcm "blueyeti"
+#}
+#
+#pcm.!default {
+#	type plug
+#	slave.pcm "asymed"
+#}
+#
+## Enable dmix - enables multiple applications to output sound at the same time
+#pcm.dsp {
+#	type plug
+#	slave.pcm "dmix"
+#}

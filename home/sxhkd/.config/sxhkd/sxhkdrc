@@ -5,10 +5,12 @@ button7
 	xte 'key XF86AudioRaiseVolume'
 
 XF86AudioLowerVolume
-	volctl PCH Master 3%-
+	amixer -D pulse set Master 3%-
+	#volctl PCH Master 3%-
 
 XF86AudioRaiseVolume
-	volctl PCH Master 3%+
+	amixer -D pulse set Master 3%+
+	#volctl PCH Master 3%+
 
 super + bracketleft
 	brightctl DP-2 down 0.05
