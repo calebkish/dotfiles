@@ -13,4 +13,5 @@ feh --bg-scale ~/.config/wall2.jpg
 compton --config ~/.config/compton/compton.conf &
 unclutter --timeout 2 &
 systemctl --user start user-applications.target
+dwmblocks &
 exec dwm

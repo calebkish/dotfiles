@@ -8,7 +8,7 @@
 profile="$1"
 dir="$2"
 packages="$3"
-[ "$4" = 'y' ] && preview='-n' || preview=''
+[ "$4" = 'y' ] && preview='--no' || preview=''
 
 case "$profile" in
 	'system') target='/' ;;
@@ -19,7 +19,7 @@ esac
 if [ "$packages" = '*' ]; then
 	(
 		cd "$dir" || exit
-		stow "$preview" -vSt "$target" "*"
+		stow "$preview" --verbose --stow --target "$target" "*"
 	)
 	exit
 fi
@@ -27,6 +27,6 @@ fi
 echo "$packages" | tr ' ' '\n' | while read -r package; do
 	(
 		cd "$dir" || exit
-		stow "$preview" -vSt "$target" "$package"
+		stow "$preview" --verbose --stow --target "$target" "$package"
 	)
 done

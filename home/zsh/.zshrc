@@ -90,6 +90,6 @@ alias ll='ls -al'
 alias vi='nvim'
 alias vim='nvim'
 
-rm -r ~/Desktop 1>/dev/null 2>&1
+#rm -r ~/Desktop 1>/dev/null 2>&1
 
 PROMPT='%B%1~%f %#%b '

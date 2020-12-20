@@ -5,15 +5,28 @@ button7
 	xte 'key XF86AudioRaiseVolume'
 
 XF86AudioLowerVolume
-	amixer -D pulse set Master 3%-
+	pactl set-sink-volume 0 -3%
+	#amixer -c PCH set Master 3%-
 	#volctl PCH Master 3%-
 
 XF86AudioRaiseVolume
-	amixer -D pulse set Master 3%+
+	pactl set-sink-volume 0 +3%
+	#amixer -c PCH set PCM 3%+
 	#volctl PCH Master 3%+
 
 super + bracketleft
-	brightctl DP-2 down 0.05
+	pactl set-sink-volume 0 -3%
+	#xte 'key XF86AudioLowerVolume'
 
 super + bracketright
+	pactl set-sink-volume 0 +3%
+	#xte 'key XF86AudioRaiseVolume'
+
+super + minus
+	brightctl DP-2 down 0.05
+
+super + equal
 	brightctl DP-2 up 0.05
+
+super + s
+	flameshot gui
