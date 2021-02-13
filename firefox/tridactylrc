@@ -1,0 +1,25 @@
+" Run this in tridactyl to read the configuration: `source --url <raw-text-url>`
+
+sanitise tridactyllocal tridactylsync
+
+unbind <<
+unbind >>
+unbind <C-f>
+set theme dark
+bind j scrollline 4
+bind k scrollline -4
+bind J tabnext
+bind K tabprev
+set hintfiltermode vimperator-reflow
+set hintnames numeric
+
+
+" Comment toggler for Reddit, Hacker News and Lobste.rs
+bind ;c hint -Jc [class*="expand"],[class="togg"],[class="comment_folder"]
+
+
+" Only hint search results on Google and DDG
+bindurl www.google.com f hint -Jc .rc > div > a
+bindurl www.google.com F hint -Jbc .rc > div > a
+bindurl ^https://duckduckgo.com f hint -Jc [class=result__a]
+bindurl ^https://duckduckgo.com F hint -Jbc [class=result__a]
