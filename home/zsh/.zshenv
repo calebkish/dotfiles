@@ -12,9 +12,4 @@ export LESSHISTFILE=-
 
 export EDITOR="nvim"
 
-# Set where python virtual environments should be stored.
-# Used by virtualenvwrapper (pip install virtualenvwrapper)
-export WORKON_HOME="~/.virtualenvs"
-source /usr/bin/virtualenvwrapper.sh
-
 systemctl --user import-environment PATH
