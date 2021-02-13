@@ -1,9 +1,11 @@
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'gruvbox-community/gruvbox'
 Plug 'lervag/vimtex'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sheerun/vim-polyglot'
 "Plug 'unblevable/quick-scope'
+
+" Install distribution packages first: nodejs npm yarn
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
 let mapleader =","
@@ -80,6 +82,7 @@ let mapleader =","
 	let g:qs_buftype_blacklist = ['terminal', 'nofile']
 	let g:qs_delay = 50
 
+" COC
 	let g:coc_global_extensions = [
 		\ 'coc-json',
 		\ 'coc-git',
