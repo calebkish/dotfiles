@@ -30,3 +30,6 @@ super + equal
 
 super + s
 	flameshot gui
+
+super + r
+	[ "$(systemctl --user is-active redshift)" = "active" ] && systemctl --user stop redshift || systemctl --user start redshift

@@ -1,0 +1,10 @@
+[Unit]
+Description=Redshift
+Documentation=man:redshift(1)
+
+[Service]
+ExecStart=/usr/bin/redshift
+ExecReload=/usr/bin/kill -SIGUSR1 $MAINPID
+
+[Install]
+WantedBy=user-applications.target

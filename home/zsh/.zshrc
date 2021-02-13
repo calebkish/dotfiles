@@ -85,11 +85,16 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
-alias ls='ls --color=auto'
+alias ls='ls -hN --color=auto --group-directories-first'
 alias ll='ls -al'
-alias vi='nvim'
-alias vim='nvim'
-
-#rm -r ~/Desktop 1>/dev/null 2>&1
+alias lt='ls --human-readable --size -1 -S --classify'
+alias untar='tar -zxvf'
+alias cl='clear'
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias rm='rm -v'
+alias mkd='mkdir -pv'
+alias grep='grep --color=auto'
+alias diff='diff --color=auto'
 
 PROMPT='%B%1~%f %#%b '
