@@ -1,3 +1,5 @@
+" Run this in tridactyl to read the configuration: `source --url <raw-text-url>`
+
 sanitise tridactyllocal tridactylsync
 
 unbind <<
