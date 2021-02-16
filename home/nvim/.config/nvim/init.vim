@@ -55,7 +55,7 @@ let mapleader =","
 	au BufEnter * if &buftype == 'terminal' | :startinsert | endif
 	" open terminal on ctrl+n
 	function! OpenTerminal()
-	split term://zsh
+	split term://sh
 	resize 10
 	endfunction
 	nnoremap <c-n> :call OpenTerminal()<CR>
@@ -71,6 +71,10 @@ let mapleader =","
 
 " Check file in shellcheck:
 	nmap <leader>s :!clear && shellcheck %<CR>
+
+" Use a python virtual environment just for Neovim so I don't have to install "pynvim" in every virtual environment.
+	let g:python3_host_prog = '/home/caleb/.venv/bin/python'
+	let g:loaded_python_provider = 0
 
 " latex
 	let g:vimtex_view_method = 'zathura'
@@ -94,10 +98,10 @@ let mapleader =","
 		\ 'coc-prettier',
 		\ 'coc-sh',
 		\ 'coc-explorer',
-		\ 'coc-pyright',
 		\]
 		"\ 'coc-markdownlint',
 		"\ 'coc-vimlsp',
+		"\ 'coc-pyright',
 
 
 	nmap <A-f> :CocCommand explorer<CR>	
