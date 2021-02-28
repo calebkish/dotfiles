@@ -97,4 +97,21 @@ alias mkd='mkdir -pv'
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 
+alias ae="source venv/bin/activate"
+alias de="deactivate"
+alias ce="python3 -m venv venv"
+alias ie="pip install --upgrade pip ; pip3 install -r requirements.txt"
+
 PROMPT='%B%1~%f %#%b '
+
+[ -n $WSL_INTEROP ] && cd
+
+# nvm - node version manager (https://github.com/nvm-sh/nvm)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# pyenv (https://github.com/pyenv/pyen://github.com/pyenv/pyenv)
+export PATH="/home/caleb/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"

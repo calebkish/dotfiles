@@ -12,4 +12,4 @@ export LESSHISTFILE=-
 
 export EDITOR="nvim"
 
-systemctl --user import-environment PATH
+[ -z $WSL_INTEROP ] && systemctl --user import-environment PATH
