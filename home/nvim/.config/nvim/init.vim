@@ -1,14 +1,20 @@
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'gruvbox-community/gruvbox'
-Plug 'lervag/vimtex'
 Plug 'sheerun/vim-polyglot'
-"Plug 'unblevable/quick-scope'
 
-" Install distribution packages first: nodejs npm yarn
+" Dependecies: zathura, texlive
+Plug 'lervag/vimtex'
+
+" Dependencies: fzf
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" Dependencies: nodejs npm yarn
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
 let mapleader =","
+
 
 " Basics
 	set scrolloff=1000
@@ -25,20 +31,20 @@ let mapleader =","
 	set wrap
 	set sidescroll=1
 	set sidescrolloff=5
-	set listchars=tab:\ \ ,precedes:<,extends:>
+	set listchars=tab:\|\ ,precedes:<,extends:>
 	set list " shows list chars (above this line)
 	set shiftround " will remove extraneous whitespace before tabs and round to multiple of shiftwidth
 	set hidden
+	set mouse=a
+
 
 " Colorscheme
 	set termguicolors
 	colorscheme gruvbox
+	" Makes the background transparent
 	hi Normal guibg=NONE ctermbg=NONE
+	set colorcolumn=80
 
-	" === These were used from Plug 'morhetz/gruvbox' ===
-	"let g:gruvbox_contrast_dark = 'hard'
-	"let g:gruvbox_transparent_bg = 1
-	"set background=dark
 
 " Window splitting
 	set splitbelow splitright
@@ -47,21 +53,49 @@ let mapleader =","
 	map <C-k> <C-w>k
 	map <C-l> <C-w>l
 
+
+" Tabbing
+	noremap <leader>1 1gt
+	noremap <leader>2 2gt
+	noremap <leader>3 3gt
+	noremap <leader>4 4gt
+	noremap <leader>5 5gt
+	noremap <leader>6 6gt
+	noremap <leader>7 7gt
+	noremap <leader>8 8gt
+	noremap <leader>9 9gt
+	noremap <leader>0 :tablast<CR>
+
+	" Go to last active tab
+	au TabLeave * let g:lasttab = tabpagenr()
+	nnoremap <silent> <c-l> :exe "tabn ".g:lasttab<cr>
+	vnoremap <silent> <c-l> :exe "tabn ".g:lasttab<cr>
+
+
 " terminal
-	" open new split panes to right and below
-	" turn terminal to normal mode with escape
-	tnoremap <Esc> <C-\><C-n>
-	" start terminal in insert mode
-	au BufEnter * if &buftype == 'terminal' | :startinsert | endif
-	" open terminal on ctrl+n
+	" Use to open terminal.
 	function! OpenTerminal()
-	split term://sh
-	resize 10
+		split term://bash
+		resize 10
 	endfunction
-	nnoremap <c-n> :call OpenTerminal()<CR>
+	let $TERMCWD = expand('%:p:h')
+	nnoremap <leader>t :call OpenTerminal()<CR>cd $TERMCWD<CR>clear<CR>
+
+	" Exit out of terminal.
+	tnoremap <leader>t <C-\><C-n>:q!<CR>
+
+	" Start terminal in insert mode.
+	au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+
+	" Easily navigate between terminal and other panes.
+	tnoremap <C-h> <C-\><C-n><C-w>h
+	tnoremap <C-j> <C-\><C-n><C-w>j
+	tnoremap <C-k> <C-\><C-n><C-w>k
+	tnoremap <C-l> <C-\><C-n><C-w>l
+
 
 " Replace all is aliased to S.
-	nnoremap S :%s//g<Left><Left>
+	"nnoremap S :%s//g<Left><Left>
 
 " Disables automatic commenting on newline:
 	autocmd BufEnter * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
@@ -76,15 +110,23 @@ let mapleader =","
 	let g:python3_host_prog = '/home/caleb/.venv/bin/python'
 	let g:loaded_python_provider = 0
 
+" fzf
+	let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.5, 'highlight': 'Comment' } }
+	let g:fzf_action = {
+		\ 'ctrl-t': 'tab split',
+		\ 'ctrl-x': 'split',
+		\ 'ctrl-v': 'vsplit',
+		\}
+	noremap <C-p> :Files<CR>
+	if has("nvim")
+		" Escape inside a FZF terminal window should exit the terminal window
+		" rather than going into the terminal's normal mode.
+		autocmd FileType fzf tnoremap <buffer> <Esc> <Esc>
+	endif
+
 " latex
 	let g:vimtex_view_method = 'zathura'
 	let g:tex_flavor = 'latex'
-
-" quick-scope
-	nmap <leader>q <plug>(QuickScopeToggle)
-	xmap <leader>q <plug>(QuickScopeToggle)
-	let g:qs_buftype_blacklist = ['terminal', 'nofile']
-	let g:qs_delay = 50
 
 " COC
 	let g:coc_global_extensions = [
@@ -98,6 +140,7 @@ let mapleader =","
 		\ 'coc-prettier',
 		\ 'coc-sh',
 		\ 'coc-explorer',
+		\ 'coc-jedi'
 		\]
 		"\ 'coc-markdownlint',
 		"\ 'coc-vimlsp',
@@ -198,4 +241,4 @@ let mapleader =","
 	command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 	" Add status line support, for integration with other plugin, checkout `:h coc-status`
-	set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+	"set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
