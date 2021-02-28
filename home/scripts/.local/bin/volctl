@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-
-card="$1"
-mixer_control="$2"
-value="$3"
-
-card_num="$(cat /proc/asound/cards | grep "$card" | head -1 | awk '{print $1}')"
-
-amixer -c $card_num set $mixer_control $value 1>/dev/null 2>&1
