@@ -1,7 +1,0 @@
-www.youtube.com###related
-www.youtube.com###endpoint[title="Home"]
-www.youtube.com###endpoint[title="Trending"]
-www.youtube.com##ytd-browse.style-scope.ytd-page-manager[page-subtype="home"]
-www.youtube.com##div.ytp-pause-overlay.ytp-scroll-min
-www.youtube.com##ytd-mealbar-promo-renderer.style-scope
-

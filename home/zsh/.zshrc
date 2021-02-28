@@ -41,4 +41,4 @@ alias ie="pip install --upgrade pip ; pip3 install -r requirements.txt"
 
 PROMPT='%B%1~%f %#%b '
 
-[ -n $WSL_INTEROP ] && cd
+[ -n "$(pwd | grep /mnt/c/Users/)" ] && cd
