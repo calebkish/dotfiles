@@ -22,7 +22,7 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
-alias ls='ls -hN --color=auto --group-directories-first'
+alias ls='ls -hN --color=always --group-directories-first'
 alias ll='ls -al'
 alias lt='ls --human-readable --size -1 -S --classify'
 alias untar='tar -zxvf'
@@ -42,3 +42,4 @@ alias ie="pip install --upgrade pip ; pip3 install -r requirements.txt"
 PROMPT='%B%1~%f %#%b '
 
 [ -n "$(pwd | grep /mnt/c/Users/)" ] && cd
+[ -z $WSL_INTEROP ] && alias ls='ls -hN --color=never --group-directories-first'
