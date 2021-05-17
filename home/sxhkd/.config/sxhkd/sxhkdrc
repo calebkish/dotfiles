@@ -5,21 +5,21 @@ button7
 	xte 'key XF86AudioRaiseVolume'
 
 XF86AudioLowerVolume
-	pactl set-sink-volume 0 -3%
+	pactl set-sink-volume @DEFAULT_SINK@ -3%
 	#amixer -c PCH set Master 3%-
 	#volctl PCH Master 3%-
 
 XF86AudioRaiseVolume
-	pactl set-sink-volume 0 +3%
+	pactl set-sink-volume @DEFAULT_SINK@ +3%
 	#amixer -c PCH set PCM 3%+
 	#volctl PCH Master 3%+
 
 super + bracketleft
-	pactl set-sink-volume 0 -3%
+	pactl set-sink-volume @DEFAULT_SINK@ -3%
 	#xte 'key XF86AudioLowerVolume'
 
 super + bracketright
-	pactl set-sink-volume 0 +3%
+	pactl set-sink-volume @DEFAULT_SINK@ +3%
 	#xte 'key XF86AudioRaiseVolume'
 
 super + minus

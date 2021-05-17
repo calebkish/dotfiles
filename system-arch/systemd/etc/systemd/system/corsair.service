@@ -1,0 +1,9 @@
+[Unit]
+Description=Set fan Corsair radiator fan speeds
+Documentation=
+
+[Service]
+ExecStart=opencorsairlink --device 0 --fan mode=3
+
+[Install]
+WantedBy=multi-user.target

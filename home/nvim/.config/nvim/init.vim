@@ -1,244 +1,232 @@
 call plug#begin(stdpath('data') . '/plugged')
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
 Plug 'gruvbox-community/gruvbox'
-Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-fugitive'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'mbbill/undotree'
 
-" Dependecies: zathura, texlive
-Plug 'lervag/vimtex'
+Plug 'terrortylor/nvim-comment'
+Plug 'kevinhwang91/nvim-bqf'
 
-" Dependencies: fzf
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+" Telescope
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
-" Dependencies: nodejs npm yarn
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Python
+Plug 'psf/black'
+
+" HTML
+Plug 'windwp/nvim-ts-autotag'
+Plug 'mattn/emmet-vim'
+
+" Plug 'tpope/vim-sleuth'
+Plug 'roryokane/detectindent'
 call plug#end()
 
-let mapleader =","
+" === AUTOCOMMANDS ===
+
+" Return to last position in exited file.
+autocmd BufReadPost *
+	\ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+	\ |   exe "normal! g`\""
+	\ | endif
+
+" === COMMANDS ===
+command! -range JSONFormat <line1>,<line2>!python -m json.tool
 
 
-" Basics
-	set scrolloff=1000
-	set tabstop=4
-	set shiftwidth=4
-	set nohlsearch
-	set ignorecase
-	set smartcase " will be case insensitive unless search contains a captial letter
-	syntax on
-	set encoding=utf-8
-	set number
-	set clipboard+=unnamedplus
-	set matchpairs+=<:>
-	set wrap
-	set sidescroll=1
-	set sidescrolloff=5
-	set listchars=tab:\|\ ,precedes:<,extends:>
-	set list " shows list chars (above this line)
-	set shiftround " will remove extraneous whitespace before tabs and round to multiple of shiftwidth
-	set hidden
-	set mouse=a
+let mapleader=" "
+
+filetype plugin indent on
+set scrolloff=1000
+set shiftwidth=0 " Number of spaces to use for each step of (auto)indent. 
+				 " Used for 'cindent', >>, <<, etc. When zero the 'tabstop'
+				 " value will be used.
+set smarttab " <Tab> in front of a line inserts blanks according to 
+			 " 'shiftwidth'. <BS> will delete a 'shiftwidth' worth of space at
+			 " the start of the line. 'tabstop' will be used in other places.
+set tabstop=4 " Number of spaces that <Tab> counts for. Essentially, "    " 
+			  " will be equivalent to "\t".
+set softtabstop=-1 " Number of spaces that <Tab> counts for while performing 
+				   " editing operations. When negative, the value of
+				   " 'shiftwidth' is used. Useful to keep 'ts' at its standard
+				   " value while being able to edit like it is set to 'sts'.
+set noexpandtab " Don't expand tabs to spaces.
+set nosmartindent " Do smart indenting when starting a new line. Cases: After a 
+				" line ending in '{', after a line starting with a keyword from
+				" 'cinwords', before a line starting with '}' (only with the
+				" "O" command).
+set autoindent " Copy indent from current line when starting a new line. 
+			   " 'autoindent' is deferred when 'smartindent' applies.
+set shiftround " Will remove extraneous whitespace before tabs and round to 
+			   " multiple of 'shiftwidth'.
+set nohlsearch
+set ignorecase
+set smartcase " will be case insensitive unless search contains a captial letter
+set noerrorbells
+syntax on
+set encoding=utf-8
+set number
+set clipboard+=unnamedplus
+set matchpairs+=<:>
+set nowrap
+set sidescroll=1
+set sidescrolloff=5
+set listchars+=tab:>-,precedes:<,extends:>
+set list " shows list chars (above this line)
+set hidden
+set mouse=a
+set guicursor=n-v-c-sm:block,i-ci-ve:ver25-Cursor,r-cr-o:hor20
+set relativenumber
+set nu
+set noswapfile
+set nobackup
+set undofile
+set exrc " use vim configuration in current working directory.
+set nojoinspaces " Look this one up if you really care.
+set title " Vim will update the terminal window title.
+
+set wildmode=longest,list,full
+set wildmenu
+" Ignore files
+set wildignore+=**/venv/*
+
+set formatoptions-=t
+set formatoptions+=c
+set textwidth=79
+
+" Where `gf` and `:find` look for files.
+set path-=/usr/include
+" Where commands will stop searching upward.
+set path+=;/home/caleb
 
 
-" Colorscheme
-	set termguicolors
-	colorscheme gruvbox
-	" Makes the background transparent
-	hi Normal guibg=NONE ctermbg=NONE
-	set colorcolumn=80
+" === MAPS ===
+
+" Start a search on selected word.
+nnoremap <leader>bs /<C-R>=escape(expand("<cWORD>"), "/")<CR><CR>
+nnoremap <leader>u :UndotreeShow<CR>
+nnoremap <leader>pv :Ex<CR>
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+" Replace selection with what's in clipboard.
+vnoremap <leader>p "_dP
+" Yank the entire file into clipboard.
+nnoremap <leader>Y ggyG
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
+" x and X no longer is put in + register
+nnoremap x "_x
+nnoremap X "_X
+" Prevent indent from being removed when typing '#' as the first character in a
+" new line.
+inoremap # X#
+
+" Go to a replace the next marker.
+nnoremap <leader>g /<++><CR>cgn
+inoremap <C-z> <++>
+
+" Move left and right in command-line mode.
+cnoremap <C-h> <Left>
+cnoremap <C-l> <Right>
+
+" === NETRW ===
+let g:netrw_browse_split=0
+let g:netrw_banner=0
+let g:netrw_winsize=25
+let g:netrw_localrmdir='rm -r'
+let g:netrw_preview=1
+let g:netrw_keepdir=0 " Current directory is the one you've navigated to.
+let g:netrw_fastbrowse=0 " Makes netrw buffers close themselves.
+
+nnoremap <leader>e :Lexplore<CR>
+
+augroup netrw_maps
+	autocmd!
+	autocmd filetype netrw call ApplyNetrwMaps()
+augroup END
+
+function ApplyNetrwMaps()
+	nmap <buffer> <leader>r mfR
+	nmap <buffer> <leader>f %
+	nmap <buffer> <leader>d d
+	nnoremap <buffer><silent> <leader>e :call <SID>CloseNetrw()<CR>
+	nnoremap <buffer><silent> <Esc> :call <SID>CloseNetrw()<CR>
+	nnoremap <buffer><silent> q     :call <SID>CloseNetrw()<CR>
+	nmap <buffer> <C-l> :wincmd l<CR>
+	nmap <buffer> p <CR><C-h>
+endfunction
+
+function! s:CloseNetrw() abort
+	for bufn in range(1, bufnr('$'))
+		if bufexists(bufn) && getbufvar(bufn, '&filetype') ==# 'netrw'
+			silent! execute 'bwipeout ' . bufn
+			if getline(2) =~# '^" Netrw '
+				silent! bwipeout
+			endif
+			return
+		endif
+	endfor
+endfunction
 
 
-" Window splitting
-	set splitbelow splitright
-	map <C-h> <C-w>h
-	map <C-j> <C-w>j
-	map <C-k> <C-w>k
-	map <C-l> <C-w>l
+" === THEMING ===
+set termguicolors
+let g:gruvbox_contrast_dark='hard'
+let g:gruvbox_invert_selection='0'
+colorscheme gruvbox
+" Makes the background transparent
+hi Normal guibg=NONE ctermbg=NONE
+set colorcolumn=80
+set signcolumn=yes
 
 
-" Tabbing
-	noremap <leader>1 1gt
-	noremap <leader>2 2gt
-	noremap <leader>3 3gt
-	noremap <leader>4 4gt
-	noremap <leader>5 5gt
-	noremap <leader>6 6gt
-	noremap <leader>7 7gt
-	noremap <leader>8 8gt
-	noremap <leader>9 9gt
-	noremap <leader>0 :tablast<CR>
+" === WINDOW SPLITTING ===
+set splitbelow splitright
+noremap <C-h> :wincmd h<CR>
+noremap <C-j> :wincmd j<CR>
+noremap <C-k> :wincmd k<CR>
+noremap <C-l> :wincmd l<CR>
 
-	" Go to last active tab
-	au TabLeave * let g:lasttab = tabpagenr()
-	nnoremap <silent> <c-l> :exe "tabn ".g:lasttab<cr>
-	vnoremap <silent> <c-l> :exe "tabn ".g:lasttab<cr>
-
-
-" terminal
-	" Use to open terminal.
-	function! OpenTerminal()
-		split term://bash
-		resize 10
-	endfunction
-	let $TERMCWD = expand('%:p:h')
-	nnoremap <leader>t :call OpenTerminal()<CR>cd $TERMCWD<CR>clear<CR>
-
-	" Exit out of terminal.
-	tnoremap <leader>t <C-\><C-n>:q!<CR>
-
-	" Start terminal in insert mode.
-	au BufEnter * if &buftype == 'terminal' | :startinsert | endif
-
-	" Easily navigate between terminal and other panes.
-	tnoremap <C-h> <C-\><C-n><C-w>h
-	tnoremap <C-j> <C-\><C-n><C-w>j
-	tnoremap <C-k> <C-\><C-n><C-w>k
-	tnoremap <C-l> <C-\><C-n><C-w>l
+" === TABBING ===
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
+noremap <leader>0 :tablast<CR>
 
 
-" Replace all is aliased to S.
-	"nnoremap S :%s//g<Left><Left>
+" === INTEGRATED TERMINAL ===
+" Use to open terminal.
+function! OpenTerminal()
+    split term://zsh
+    resize 10
+endfunction
+let $TERMCWD = expand('%:p:h')
+nnoremap <leader>t :call OpenTerminal()<CR>cd $TERMCWD<CR>clear<CR>
 
-" Disables automatic commenting on newline:
-	autocmd BufEnter * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+" Exit out of terminal.
+tnoremap <C-q> <C-\><C-n>:q!<CR>
+
+" Start terminal in insert mode.
+autocmd TermOpen * startinsert
+
+" Easily navigate between terminal and other panes.
+tnoremap <C-h> <C-\><C-n><C-w>h
+tnoremap <C-j> <C-\><C-n><C-w>j
+tnoremap <C-k> <C-\><C-n><C-w>k
+tnoremap <C-l> <C-\><C-n><C-w>l
 
 " Use current init.vim version
-	nmap <leader>r :so ~/.config/nvim/init.vim<CR>
+nmap <leader>r :so ~/.config/nvim/init.vim<CR>
 
-" Check file in shellcheck:
-	nmap <leader>s :!clear && shellcheck %<CR>
-
-" Use a python virtual environment just for Neovim so I don't have to install "pynvim" in every virtual environment.
-	let g:python3_host_prog = '/home/caleb/.venv/bin/python'
-	let g:loaded_python_provider = 0
-
-" fzf
-	let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.5, 'highlight': 'Comment' } }
-	let g:fzf_action = {
-		\ 'ctrl-t': 'tab split',
-		\ 'ctrl-x': 'split',
-		\ 'ctrl-v': 'vsplit',
-		\}
-	noremap <C-p> :Files<CR>
-	if has("nvim")
-		" Escape inside a FZF terminal window should exit the terminal window
-		" rather than going into the terminal's normal mode.
-		autocmd FileType fzf tnoremap <buffer> <Esc> <Esc>
-	endif
-
-" latex
-	let g:vimtex_view_method = 'zathura'
-	let g:tex_flavor = 'latex'
-
-" COC
-	let g:coc_global_extensions = [
-		\ 'coc-json',
-		\ 'coc-git',
-		\ 'coc-tsserver',
-		\ 'coc-emmet',
-		\ 'coc-html',
-		\ 'coc-pairs',
-		\ 'coc-snippets',
-		\ 'coc-prettier',
-		\ 'coc-sh',
-		\ 'coc-explorer',
-		\ 'coc-jedi'
-		\]
-		"\ 'coc-markdownlint',
-		"\ 'coc-vimlsp',
-		"\ 'coc-pyright',
-
-
-	nmap <A-f> :CocCommand explorer<CR>	
-
-	" From Coc Readme
-	set updatetime=300
-
-	" Some servers have issues with backup files, see #649
-	set nobackup
-	set nowritebackup
-
-	" don't give |ins-completion-menu| messages.
-	set shortmess+=c
-
-	" always show signcolumns
-	set signcolumn=yes
-
-	" Use tab for trigger completion with characters ahead and navigate.
-	" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-	inoremap <silent><expr> <TAB>
-				\ pumvisible() ? "\<C-n>" :
-				\ <SID>check_back_space() ? "\<TAB>" :
-				\ coc#refresh()
-	inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-	function! s:check_back_space() abort
-		let col = col('.') - 1
-		return !col || getline('.')[col - 1]  =~# '\s'
-	endfunction
-
-	" Use <c-space> to trigger completion.
-	inoremap <silent><expr> <c-space> coc#refresh()
-
-	" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-	" Coc only does snippet and additional edit on confirm.
-	inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-	" Or use `complete_info` if your vim support it, like:
-	" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-
-	" Use `[g` and `]g` to navigate diagnostics
-	nmap <silent> [g <Plug>(coc-diagnostic-prev)
-	nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-	" Remap keys for gotos
-	nmap <silent> gd <Plug>(coc-definition)
-	nmap <silent> gy <Plug>(coc-type-definition)
-	nmap <silent> gi <Plug>(coc-implementation)
-	nmap <silent> gr <Plug>(coc-references)
-
-	function! s:show_documentation()
-		if (index(['vim','help'], &filetype) >= 0)
-			execute 'h '.expand('<cword>')
-		else
-			call CocAction('doHover')
-		endif
-	endfunction
-
-	" Remap for rename current word
-	nmap <rn> <Plug>(coc-rename)
-
-	" Remap for format selected region
-	xmap <leader>f  <Plug>(coc-format-selected)
-	nmap <leader>f  <Plug>(coc-format-selected)
-
-	augroup mygroup
-		autocmd!
-		" Setup formatexpr specified filetype(s).
-		autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-		" Update signature help on jump placeholder
-		autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-	augroup end
-
-	" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-	xmap <leader>a  <Plug>(coc-codeaction-selected)
-	nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-	" Remap for do codeAction of current line
-	nmap <leader>ac  <Plug>(coc-codeaction)
-	" Fix autofix problem of current line
-	nmap <leader>qf  <Plug>(coc-fix-current) 
-	" Create mappings for function text object, requires document symbols feature of languageserver.
-	xmap if <Plug>(coc-funcobj-i)
-	xmap af <Plug>(coc-funcobj-a)
-	omap if <Plug>(coc-funcobj-i)
-	omap af <Plug>(coc-funcobj-a)
-
-	" Use `:Format` to format current buffer
-	command! -nargs=0 Format :call CocAction('format')
-
-	" Use `:Fold` to fold current buffer
-	command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-	" use `:OR` for organize import of current buffer
-	command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-	" Add status line support, for integration with other plugin, checkout `:h coc-status`
-	"set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" Check file in shellcheck
+nmap <leader>s :!clear && shellcheck %<CR>
