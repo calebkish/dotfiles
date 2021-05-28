@@ -14,9 +14,9 @@ compinit
 # End of lines added by compinstall
 
 # Enable colors and change prompt:
-autoload -U colors && colors	# Load colors
-setopt autocd		# Automatically cd into typed directory.
-stty stop undef		# Disable ctrl-s to freeze terminal.
+autoload -U colors && colors    # Load colors
+# setopt autocd       # Automatically cd into typed directory.
+stty stop undef     # Disable ctrl-s to freeze terminal.
 setopt interactive_comments
 
 # Basic auto/tab complete:
@@ -24,7 +24,7 @@ autoload -U compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
 compinit
-_comp_options+=(globdots)		# Include hidden files.
+_comp_options+=(globdots)       # Include hidden files.
 
 # Use vim keys in tab complete menu:
 bindkey -M menuselect 'h' vi-backward-char
@@ -60,9 +60,9 @@ lfcd () {
     fi
 }
 bindkey -s '^o' 'lfcd\n'
-bindkey -s '^a' 'bc -lq\n'
-bindkey -s '^f' 'cd "$(dirname "$(fzf)")"\n'
-bindkey '^[[P' delete-char
+# bindkey -s '^a' 'bc -lq\n'
+# bindkey -s '^f' 'cd "$(dirname "$(fzf)")"\n'
+# bindkey '^[[P' delete-char
 
 # Edit line in vim with ctrl-e:
 autoload edit-command-line; zle -N edit-command-line
@@ -75,7 +75,7 @@ alias untar='tar -zxvf'
 alias cl='clear'
 alias cp='cp -iv'
 alias mv='mv -iv'
-alias rm='rm -v'
+alias rm='rm'
 alias mkd='mkdir -pv'
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
@@ -90,17 +90,19 @@ PROMPT='%B%1~%f %#%b '
 [ -n "$(pwd | grep /mnt/c/Users/)" ] && cd
 
 
-plugin_repos="git@github.com:zsh-users/zsh-syntax-highlighting.git"
-[ ! -d '~/.zplugins' ] && mkdir ~/.zplugins 2>/dev/null
+update-plugins () {
+    plugin_repos="git@github.com:zsh-users/zsh-syntax-highlighting.git"
+    [ ! -d '~/.zplugins' ] && mkdir ~/.zplugins 2>/dev/null
 
-echo "$plugin_repos" | tr ' ' '\n' | while read repo; do
-	(
-		cd ~/.zplugins
-		plug_dir_name="${repo##*/}"
-		plug_dir_name="${plug_dir_name%%.git}"
-		git clone "$repo" 2>/dev/null
-		#git -C "$HOME/.zplugins/$plug_dir_name" pull origin master 1>/dev/null 2>&1
-	)
-done
+    echo "$plugin_repos" | tr ' ' '\n' | while read repo; do
+        (
+            cd ~/.zplugins
+            plug_dir_name="${repo##*/}"
+            plug_dir_name="${plug_dir_name%%.git}"
+            git clone "$repo" 2>/dev/null
+            git -C "$HOME/.zplugins/$plug_dir_name" pull origin master 1>/dev/null 2>&1
+        )
+    done
+}
 
 source ~/.zplugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh

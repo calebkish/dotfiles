@@ -37,7 +37,7 @@ require'lspconfig'.dotls.setup{}
 
 -- === C# ===
 local pid = vim.fn.getpid()
-local omnisharp_bin = "/usr/bin/omnisharp"
+local omnisharp_bin = "/home/caleb/repos/omnisharp/run"
 require'lspconfig'.omnisharp.setup{
     cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) };
 }
