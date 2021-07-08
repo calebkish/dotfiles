@@ -85,6 +85,9 @@ alias de="deactivate"
 alias ce="python3 -m venv venv"
 alias ie="pip install --upgrade pip ; pip3 install -r requirements.txt"
 
+alias ng="npm run ng"
+
+
 PROMPT='%B%1~%f %#%b '
 
 [ -n "$(pwd | grep /mnt/c/Users/)" ] && cd
@@ -106,3 +109,5 @@ update-plugins () {
 }
 
 source ~/.zplugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
+
+source /usr/share/nvm/init-nvm.sh
