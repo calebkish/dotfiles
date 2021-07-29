@@ -87,12 +87,13 @@ alias ie="pip install --upgrade pip ; pip3 install -r requirements.txt"
 
 alias ng="npm run ng"
 
-
 PROMPT='%B%1~%f %#%b '
 
-[ -n "$(pwd | grep /mnt/c/Users/)" ] && cd
-
-[ -n "$WSL_INTEROP" ] && sudo service wsl-vpnkit start 1>/dev/null
+if [ -n $WSL_INTEROP -o -n $WSLENV -o -n $WSL_DISTRO_NAME ]; then
+    sudo service wsl-vpnkit start 1>/dev/null
+    [ -n "$(pwd | grep /mnt/c/Users/)" ] && cd
+else
+fi
 
 update-plugins () {
     plugin_repos="git@github.com:zsh-users/zsh-syntax-highlighting.git"
