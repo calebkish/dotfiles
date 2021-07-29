@@ -92,6 +92,7 @@ PROMPT='%B%1~%f %#%b '
 
 [ -n "$(pwd | grep /mnt/c/Users/)" ] && cd
 
+[ -n "$WSL_INTEROP" ] && sudo service wsl-vpnkit start 1>/dev/null
 
 update-plugins () {
     plugin_repos="git@github.com:zsh-users/zsh-syntax-highlighting.git"

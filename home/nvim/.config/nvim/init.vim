@@ -157,8 +157,12 @@ nnoremap X "_X
 inoremap # X#
 
 " Go to a replace the next marker.
-"nnoremap <leader>g /<++><CR>cgn
-"inoremap <C-f> <++>
+nnoremap <leader>g /<++><CR>cgn
+inoremap <C-f> <++>
+
+inoremap <F15> <nop>
+
+
 
 " === NETRW ===
 let g:netrw_browse_split=0

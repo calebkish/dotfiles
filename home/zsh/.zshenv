@@ -11,6 +11,7 @@ export PATH
 export LESSHISTFILE=-
 
 export EDITOR="nvim"
+export TERM=xterm-256color
 
 if [ -z $WSL_INTEROP -a -z $WSLENV -a -z $WSL_DISTRO_NAME ]; then
     systemctl --user import-environment PATH
@@ -20,3 +21,9 @@ else
 fi
 
 
+export SSL_CERT_DIR="/home/caleb/certificates/"
+export SSL_CERT_FILE="/home/caleb/certificates/ql-combined-certificate.crt"
+
+export NODE_EXTRA_CA_CERTS="$HOME/certificates/ql-combined-certificate.crt"
+
+export DOTNET_CLI_TELEMETRY_OPTOUT="1"
