@@ -12,7 +12,7 @@ export LESSHISTFILE=-
 
 export EDITOR="nvim"
 
-if [ -z $WSL_INTEROP -a -z $WSLENV -a -z WSL_DISTRO_NAME ]; then
+if [ -z $WSL_INTEROP -a -z $WSLENV -a -z $WSL_DISTRO_NAME ]; then
     systemctl --user import-environment PATH
     export JAVA_HOME="/usr/lib/jvm/default"
 else

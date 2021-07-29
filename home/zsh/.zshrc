@@ -109,5 +109,3 @@ update-plugins () {
 }
 
 source ~/.zplugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
-
-source /usr/share/nvm/init-nvm.sh

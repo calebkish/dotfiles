@@ -1,0 +1,104 @@
+﻿/*
+    1. Enable toolkit.legacyUserProfileCustomizations.stylesheets in `about:config`.
+    2. Open your current Firefox profile folder by going to `about:profiles`.
+    3. In the profile folder, add `chrome/userContent.css`.
+    4. Put this file content in `userContent.css`.
+*/
+
+@-moz-document url-prefix("https://lite.duckduckgo.com/lite") {
+    html {
+        background-color: #1C1C1C;
+        color: #eee !important;
+    }
+
+    input.query {
+        background-color: #333333 !important;
+        color: #EEEEEE !important;
+    }
+
+    input.submit[value="Search"] {
+        display: none !important;
+    }
+
+    select {
+        display: none !important;
+    }
+
+    .navbutton {
+        color: #eee !important;
+    }
+
+    .result-link {
+        color: #EEEEEE !important;
+    }
+
+    .result-snippet {
+        color: #CCC !important;
+    }
+
+    .link-text {
+        color: #aaa !important;
+        color: #e1753e !important;
+    }
+
+    td[valign="top"] {
+        color: #eee !important;
+    }
+}
+
+html,body{
+	scrollbar-color: #525255 #323234 !important;
+}
+
+.ytp-chrome-controls {
+    position: relative;
+    top: 40px;
+}
+
+.ytp-progress-bar-container {
+    bottom: 0 !important;
+}
+
+.ytp-fullscreen-button.ytp-button,
+.ytp-settings-button.ytp-button,
+.ytp-size-button.ytp-button
+{
+    bottom: 40px !important;
+    position: relative !important;
+}
+
+.ytp-tooltip.ytp-bottom.ytp-preview {
+    top: unset !important;
+    bottom: 45px !important;
+}
+
+.ytp-gradient-top,
+.ytp-chrome-top.ytp-show-cards-title,
+.ytp-gradient-bottom
+{
+    display: none;
+}
+
+
+@-moz-document url-prefix("https://www.youtube.com") {
+    .branding-img-container,
+    #related,
+    #endpoint[title="Home"],
+    #endpoint[title="Trending"],
+    ytd-browse.style-scope.ytd-page-manager[page-subtype="home"],
+    div.ytp-pause-overlay.ytp-scroll-min,
+    ytd-mealbar-promo-renderer.style-scope
+    {
+        display: none;
+    }
+}
+
+@-moz-document url-prefix("ytprivate.com") {
+    .h-box.banner > h3,
+    .footer,
+    center,
+    .h-box hr
+    {
+        display: none;
+    }
+}

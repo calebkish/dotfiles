@@ -1,8 +1,8 @@
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
+"Plug 'nvim-lua/completion-nvim'
+Plug 'hrsh7th/nvim-compe'
 Plug 'gruvbox-community/gruvbox'
-Plug 'tpope/vim-fugitive'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'mbbill/undotree'
 
@@ -14,6 +14,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
+Plug 'ThePrimeagen/harpoon'
 
 " Python
 Plug 'psf/black'
@@ -22,10 +23,11 @@ Plug 'psf/black'
 Plug 'windwp/nvim-ts-autotag'
 Plug 'mattn/emmet-vim'
 
-" Plug 'tpope/vim-sleuth'
 Plug 'roryokane/detectindent'
-call plug#end()
 
+Plug 'psliwka/vim-smoothie'
+Plug 'jiangmiao/auto-pairs'
+call plug#end()
 
 
 " === AUTOCOMMANDS ===
@@ -71,7 +73,7 @@ set autoindent " Copy indent from current line when starting a new line.
 set shiftround " Will remove extraneous whitespace before tabs and round to 
                " multiple of 'shiftwidth'.
 set encoding=utf-8
-set scrolloff=1000
+set scrolloff=3
 set nohlsearch
 set ignorecase
 set smartcase " will be case insensitive unless search contains a captial letter
@@ -111,23 +113,40 @@ set path+=;/home/caleb
 
 
 
+" === THEMING ===
+syntax on
+set colorcolumn=80
+set signcolumn=yes
+set termguicolors
+let g:gruvbox_contrast_dark='hard'
+let g:gruvbox_invert_selection='0'
+colorscheme gruvbox
+" Makes backgrounds transparent
+highlight Normal guibg=NONE ctermbg=NONE
+highlight SignColumn guibg=NONE ctermbg=NONE
+
+
+
 " === MAPS ===
+noremap <ScrollWheelUp> <C-Y>
+noremap <ScrollWheelDown> <C-E>
+
 " Use current init.vim version
 nmap <leader>r :so ~/.config/nvim/init.vim<CR>
 
 " Check file in shellcheck
-nmap <leader>s :!clear && shellcheck %<CR>
+"nmap <leader>s :!clear && shellcheck %<CR>
 
 " Start a search on selected word.
-nnoremap <leader>bs /<C-R>=escape(expand("<cWORD>"), "/")<CR><CR>
-nnoremap <leader>u :UndotreeShow<CR>
-nnoremap <leader>pv :Ex<CR>
+"nnoremap <leader>bs /<C-R>=escape(expand("<cWORD>"), "/")<CR><CR>
+"nnoremap <leader>u :UndotreeShow<CR>
+"nnoremap <leader>pv :Ex<CR>
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 " Replace selection with what's in clipboard.
-vnoremap <leader>p "_dP
+"vnoremap <leader>p "_dP
 " Yank the entire file into clipboard.
-nnoremap <leader>Y ggyG
+"nnoremap <leader>Y ggyG
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
 " x and X no longer is put in + register
@@ -138,10 +157,8 @@ nnoremap X "_X
 inoremap # X#
 
 " Go to a replace the next marker.
-nnoremap <leader>g /<++><CR>cgn
-inoremap <C-f> <++>
-
-
+"nnoremap <leader>g /<++><CR>cgn
+"inoremap <C-f> <++>
 
 " === NETRW ===
 let g:netrw_browse_split=0
@@ -149,10 +166,9 @@ let g:netrw_banner=0
 let g:netrw_winsize=25
 let g:netrw_localrmdir='rm -r'
 let g:netrw_preview=1
-let g:netrw_keepdir=0 " Current directory is the one you've navigated to.
 let g:netrw_fastbrowse=0 " Makes netrw buffers close themselves.
 
-nnoremap <leader>e :Lexplore<CR>
+nnoremap <silent><leader>e :Lexplore!<CR>
 
 augroup netrw_maps
     autocmd!
@@ -160,14 +176,22 @@ augroup netrw_maps
 augroup END
 
 function ApplyNetrwMaps()
+    set signcolumn=no
+
+    " Rename a file
     nmap <buffer> <leader>r mfR
-    nmap <buffer> <leader>f %
-    nmap <buffer> <leader>d d
-    nnoremap <buffer><silent> <leader>e :call <SID>CloseNetrw()<CR>
+    " Create a new file
+    nmap <buffer> <leader>n %
+    " Create a new directory
+    nmap <buffer> <leader>N d
+    " Delete a file
+    nmap <buffer> <leader>d D
+    " Preview a file
+    nmap <buffer> p <CR><C-l>
+
     nnoremap <buffer><silent> <Esc> :call <SID>CloseNetrw()<CR>
     nnoremap <buffer><silent> <C-c> :call <SID>CloseNetrw()<CR>
-    nmap <buffer> <C-l> :wincmd l<CR>
-    nmap <buffer> p <CR><C-h>
+    nmap <buffer><silent> <C-l> :wincmd l<CR>
 endfunction
 
 " Close netrw buffer after closing it.
@@ -185,39 +209,12 @@ endfunction
 
 
 
-" === THEMING ===
-syntax on
-set termguicolors
-let g:gruvbox_contrast_dark='hard'
-let g:gruvbox_invert_selection='0'
-colorscheme gruvbox
-" Makes the background transparent
-hi Normal guibg=NONE ctermbg=NONE
-set colorcolumn=80
-set signcolumn=yes
-
-
-
 " === WINDOW SPLITTING ===
 set splitbelow splitright
-noremap <C-h> :wincmd h<CR>
-noremap <C-j> :wincmd j<CR>
-noremap <C-k> :wincmd k<CR>
-noremap <C-l> :wincmd l<CR>
-
-
-
-" === TABBING ===
-noremap <leader>1 1gt
-noremap <leader>2 2gt
-noremap <leader>3 3gt
-noremap <leader>4 4gt
-noremap <leader>5 5gt
-noremap <leader>6 6gt
-noremap <leader>7 7gt
-noremap <leader>8 8gt
-noremap <leader>9 9gt
-noremap <leader>0 :tablast<CR>
+noremap <silent><C-h> :wincmd h<CR>
+noremap <silent><C-j> :wincmd j<CR>
+noremap <silent><C-k> :wincmd k<CR>
+noremap <silent><C-l> :wincmd l<CR>
 
 
 
