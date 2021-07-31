@@ -27,6 +27,9 @@ Plug 'roryokane/detectindent'
 
 Plug 'psliwka/vim-smoothie'
 Plug 'jiangmiao/auto-pairs'
+
+Plug 'puremourning/vimspector'
+Plug 'szw/vim-maximizer'
 call plug#end()
 
 
@@ -49,6 +52,7 @@ command! -range JSONFormat <line1>,<line2>!python -m json.tool
 
 
 let mapleader=" "
+let maplocalleader="\\"
 
 filetype plugin indent on
 set shiftwidth=0 " Number of spaces to use for each step of (auto)indent. 
@@ -73,7 +77,7 @@ set autoindent " Copy indent from current line when starting a new line.
 set shiftround " Will remove extraneous whitespace before tabs and round to 
                " multiple of 'shiftwidth'.
 set encoding=utf-8
-set scrolloff=3
+set scrolloff=5
 set nohlsearch
 set ignorecase
 set smartcase " will be case insensitive unless search contains a captial letter
@@ -185,6 +189,7 @@ let g:netrw_winsize=25
 let g:netrw_localrmdir='rm -r'
 let g:netrw_preview=1
 let g:netrw_fastbrowse=0 " Makes netrw buffers close themselves.
+let g:netrw_bufsettings='nonu relativenumber signcolumn=no'
 
 nnoremap <silent><leader>e :Lexplore!<CR>
 
@@ -194,8 +199,6 @@ augroup netrw_maps
 augroup END
 
 function ApplyNetrwMaps()
-    set signcolumn=no
-
     " Rename a file
     nmap <buffer> <leader>r mfR
     " Create a new file
@@ -256,3 +259,4 @@ noremap <silent><C-l> :wincmd l<CR>
 "tnoremap <C-j> <C-\><C-n><C-w>j
 "tnoremap <C-k> <C-\><C-n><C-w>k
 "tnoremap <C-l> <C-\><C-n><C-w>l
+
