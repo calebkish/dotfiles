@@ -138,15 +138,12 @@ nmap <leader>r :so ~/.config/nvim/init.vim<CR>
 "nmap <leader>s :!clear && shellcheck %<CR>
 
 " Start a search on selected word.
-"nnoremap <leader>bs /<C-R>=escape(expand("<cWORD>"), "/")<CR><CR>
-"nnoremap <leader>u :UndotreeShow<CR>
-"nnoremap <leader>pv :Ex<CR>
+nnoremap <leader>bs /<C-R>=escape(expand("<cWORD>"), "/")<CR><CR>
+nnoremap <leader>u :UndotreeShow<CR>
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
-" Replace selection with what's in clipboard.
-"vnoremap <leader>p "_dP
-" Yank the entire file into clipboard.
-"nnoremap <leader>Y ggyG
+nnoremap <leader>j :m .+1<CR>==
+nnoremap <leader>k :m .-2<CR>==
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
 " x and X no longer is put in + register
@@ -162,6 +159,23 @@ inoremap # X#
 
 inoremap <F15> <nop>
 
+nnoremap Y y$
+
+nnoremap n nzzzv
+nnoremap N Nzzzv
+nnoremap J mzJ`z
+nnoremap <C-j> :cnext<CR>zzzv
+nnoremap <C-k> :cprev<CR>zzzv
+
+" Undo breakpoints
+inoremap , ,<c-g>u
+inoremap . .<c-g>u
+inoremap ! !<c-g>u
+inoremap ? ?<c-g>u
+
+" Jumplist mutations
+nnoremap <expr> k (v:count > 5 ? "m'" . v:count : "") . 'k'
+nnoremap <expr> j (v:count > 5 ? "m'" . v:count : "") . 'j'
 
 
 " === NETRW ===
