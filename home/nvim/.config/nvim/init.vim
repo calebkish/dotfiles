@@ -26,7 +26,8 @@ Plug 'mattn/emmet-vim'
 Plug 'roryokane/detectindent'
 
 Plug 'psliwka/vim-smoothie'
-Plug 'jiangmiao/auto-pairs'
+"Plug 'jiangmiao/auto-pairs'
+Plug 'windwp/nvim-autopairs'
 
 Plug 'puremourning/vimspector'
 Plug 'szw/vim-maximizer'
@@ -77,7 +78,7 @@ set autoindent " Copy indent from current line when starting a new line.
 set shiftround " Will remove extraneous whitespace before tabs and round to 
                " multiple of 'shiftwidth'.
 set encoding=utf-8
-set scrolloff=5
+set scrolloff=1000
 set nohlsearch
 set ignorecase
 set smartcase " will be case insensitive unless search contains a captial letter
@@ -134,37 +135,26 @@ highlight SignColumn guibg=NONE ctermbg=NONE
 " === MAPS ===
 noremap <ScrollWheelUp> <C-Y>
 noremap <ScrollWheelDown> <C-E>
+nnoremap <leader>u :UndotreeShow<CR>
+nnoremap <leader>d "_d
+vnoremap <leader>d "_d
 
 " Use current init.vim version
 nmap <leader>r :so ~/.config/nvim/init.vim<CR>
-
 " Check file in shellcheck
-"nmap <leader>s :!clear && shellcheck %<CR>
-
-" Start a search on selected word.
-nnoremap <leader>bs /<C-R>=escape(expand("<cWORD>"), "/")<CR><CR>
-nnoremap <leader>u :UndotreeShow<CR>
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
-nnoremap <leader>j :m .+1<CR>==
-nnoremap <leader>k :m .-2<CR>==
-nnoremap <leader>d "_d
-vnoremap <leader>d "_d
+nmap <leader>s :!clear && shellcheck %<CR>
 " x and X no longer is put in + register
 nnoremap x "_x
 nnoremap X "_X
-" Prevent indent from being removed when typing '#' as the first character in a
-" new line.
+" Prevent indent from being removed when typing '#' as the first character in a new line.
 inoremap # X#
-
-" Go to a replace the next marker.
-" nnoremap <leader>g /<++><CR>cgn
-" inoremap <C-f> <++>
-
-inoremap <F15> <nop>
-
+" Copy to end of line
 nnoremap Y y$
 
+noremap <F15> <nop>
+
+
+" Keep things centered
 nnoremap n nzzzv
 nnoremap N Nzzzv
 nnoremap J mzJ`z
@@ -181,6 +171,13 @@ inoremap ? ?<c-g>u
 nnoremap <expr> k (v:count > 5 ? "m'" . v:count : "") . 'k'
 nnoremap <expr> j (v:count > 5 ? "m'" . v:count : "") . 'j'
 
+" Moving lines around
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+nnoremap <leader>j :m .+1<CR>==
+nnoremap <leader>k :m .-2<CR>==
+
+
 
 " === NETRW ===
 let g:netrw_browse_split=0
@@ -191,7 +188,7 @@ let g:netrw_preview=1
 let g:netrw_fastbrowse=0 " Makes netrw buffers close themselves.
 let g:netrw_bufsettings='nonu relativenumber signcolumn=no'
 
-nnoremap <silent><leader>e :Lexplore!<CR>
+nnoremap <silent><localleader>e :Lexplore!<CR>
 
 augroup netrw_maps
     autocmd!
@@ -210,8 +207,13 @@ function ApplyNetrwMaps()
     " Preview a file
     nmap <buffer> p <CR><C-l>
 
-    nnoremap <buffer><silent> <Esc> :call <SID>CloseNetrw()<CR>
-    nnoremap <buffer><silent> <C-c> :call <SID>CloseNetrw()<CR>
+    nmap <buffer> l <CR>
+    nmap <buffer> h gg<CR>
+
+    "nnoremap <buffer><silent> <Esc> :call <SID>CloseNetrw()<CR>
+    "nnoremap <buffer><silent> <C-c> :call <SID>CloseNetrw()<CR>
+    nnoremap <buffer><silent> <Esc> :Lex!<CR>
+    nnoremap <buffer><silent> <C-c> :Lex!<CR>
     nmap <buffer><silent> <C-l> :wincmd l<CR>
 endfunction
 
