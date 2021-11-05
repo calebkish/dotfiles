@@ -1,4 +1,4 @@
-#/usr/bin/env zsh
+#!/usr/bin/env zsh
 
 # This file should not assume shell is attached to a TTY
 # This file will always be read

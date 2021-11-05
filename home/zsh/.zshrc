@@ -90,7 +90,6 @@ PROMPT='%B%1~%f %#%b '
 
 if [ -z $WSL_INTEROP -a -z $WSLENV -a -z $WSL_DISTRO_NAME ]; then
 else
-    wsl.exe -d wsl-vpnkit service wsl-vpnkit start 2>/dev/null
     [ -n "$(pwd | grep /mnt/c/Users/)" ] && cd
 fi
 
@@ -105,18 +104,16 @@ remove_from_path() {
 }
 
 export NVM_DIR="$HOME/.nvm"
-DEFAULT_NODE_VERSION="v16.10.0"
-export NVM_BIN="$NVM_DIR/versions/node/$DEFAULT_NODE_VERSION/bin"
 load_nvm() {
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 }
-lazy_load_nvm() {
-    export PATH="$NVM_BIN:$PATH"
-    export NVM_CD_FLAGS=""
-    alias nvm="echo 'Please wait while nvm loads' && unset NVM_CD_FLAGS && remove_from_path $NVM_BIN && unset NVM_BIN && unalias nvm && load_nvm && nvm $@"
-}
-lazy_load_nvm
 
+DEFAULT_NODE_VERSION="v16.10.0"
+export NVM_BIN="$NVM_DIR/versions/node/$DEFAULT_NODE_VERSION/bin"
+export PATH="$NVM_BIN:$PATH"
+export NVM_CD_FLAGS=""
+alias nvm="echo 'Please wait while nvm loads' && unset NVM_CD_FLAGS && remove_from_path $NVM_BIN && unset NVM_BIN && unalias nvm && load_nvm && nvm $@"
 
 
 
@@ -133,8 +130,7 @@ install-nvim-deps() {
         dockerfile-language-server-nodejs \
         typescript \
         typescript-language-server \
-        vscode-langservers-extracted \
-        neovim
+        vscode-langservers-extracted
 
     mkdir -p ~/.local/omnisharp
     cd ~/.local/omnisharp
@@ -163,5 +159,4 @@ install-zsh-plugins() {
 }
 
 source ~/.zplugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
