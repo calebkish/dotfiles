@@ -4,7 +4,7 @@
 # This file will always be read
 
 typeset -U PATH path
-path=("$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/.npm-bin/node_modules/.bin" "$path[@]")
+path=("$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/.local/npm-bin/node_modules/.bin" "$path[@]")
 export PATH
 
 # Disable less history file

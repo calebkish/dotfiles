@@ -1,7 +1,9 @@
+#!/usr/bin/env zsh
+
 # User configuration
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=50
+SAVEHIST=50
 unsetopt beep
 bindkey -v
 export KEYTIMEOUT=1
@@ -60,52 +62,102 @@ lfcd () {
     fi
 }
 bindkey -s '^o' 'lfcd\n'
-# bindkey -s '^a' 'bc -lq\n'
-# bindkey -s '^f' 'cd "$(dirname "$(fzf)")"\n'
-# bindkey '^[[P' delete-char
+bindkey -s '^a' 'bc -lq\n'
+bindkey -s '^f' 'cd "$(dirname "$(fzf)")"\n'
 
 # Edit line in vim with ctrl-e:
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
 
 alias ls='ls -hN --color=always --group-directories-first'
-alias ll='ls -al'
-alias lt='ls --human-readable --size -1 -S --classify'
-alias untar='tar -zxvf'
-alias cl='clear'
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias rm='rm'
-alias mkd='mkdir -pv'
+alias mkdir='mkdir -pv'
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 
+alias ll='ls -al'
+alias lt='ls --human-readable --size -1 -S --classify'
+alias untar='tar -zxvf'
 alias ae="source venv/bin/activate"
 alias de="deactivate"
 alias ce="python3 -m venv venv"
 alias ie="pip install --upgrade pip ; pip3 install -r requirements.txt"
-
 alias ng="npm run ng"
 
 PROMPT='%B%1~%f %#%b '
 
 if [ -z $WSL_INTEROP -a -z $WSLENV -a -z $WSL_DISTRO_NAME ]; then
 else
-    sudo service wsl-vpnkit start 1>/dev/null
+    wsl.exe -d wsl-vpnkit service wsl-vpnkit start 2>/dev/null
     [ -n "$(pwd | grep /mnt/c/Users/)" ] && cd
 fi
 
-update-plugins () {
-    plugin_repos="git@github.com:zsh-users/zsh-syntax-highlighting.git"
-    [ ! -d '~/.zplugins' ] && mkdir ~/.zplugins 2>/dev/null
 
-    echo "$plugin_repos" | tr ' ' '\n' | while read repo; do
+
+
+
+remove_from_path() {
+    path_fragment="$1"
+    path_fragment_index=${path[(i)$path_fragment]}
+    path[$path_fragment_index]=()
+}
+
+export NVM_DIR="$HOME/.nvm"
+DEFAULT_NODE_VERSION="v16.9.1"
+export NVM_BIN="$NVM_DIR/versions/node/$DEFAULT_NODE_VERSION/bin"
+load_nvm() {
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+}
+lazy_load_nvm() {
+    export PATH="$NVM_BIN:$PATH"
+    export NVM_CD_FLAGS=""
+    alias nvm="echo 'Please wait while nvm loads' && unset NVM_CD_FLAGS && remove_from_path $NVM_BIN && unset NVM_BIN && unalias nvm && load_nvm && nvm $@"
+}
+lazy_load_nvm
+
+
+
+
+
+install-nvim-deps() {
+    pip3 install --user neovim
+
+    mkdir -p ~/.local/npm-bin
+    cd ~/.local/npm-bin
+    npm init --yes
+    npm install \
+        pyright \
+        @angular/language-server \
+        dockerfile-language-server-nodejs \
+        typescript \
+        typescript-language-server \
+        vscode-langservers-extracted \
+        neovim
+
+    mkdir -p ~/.local/omnisharp
+    cd ~/.local/omnisharp
+    wget "https://github.com/OmniSharp/omnisharp-roslyn/releases/latest/download/omnisharp-linux-x64.tar.gz"
+    tar -xzf "omnisharp-linux-x64.tar.gz"
+}
+
+install-tmux-deps() {
+    mkdir -p ~/.tmux/plugins/tpm
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+}
+
+install-zsh-plugins() {
+    plugin_repos="https://github.com/zsh-users/zsh-syntax-highlighting.git"
+    mkdir -p ~/.zplugins
+
+    echo "$plugin_repos" | tr " " "\n" | while read repo; do
         (
             cd ~/.zplugins
             plug_dir_name="${repo##*/}"
             plug_dir_name="${plug_dir_name%%.git}"
-            git clone "$repo" 2>/dev/null
-            git -C "$HOME/.zplugins/$plug_dir_name" pull origin master 1>/dev/null 2>&1
+            git clone "$repo"
+            git -C "$HOME/.zplugins/$plug_dir_name" pull origin master
         )
     done
 }

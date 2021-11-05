@@ -49,27 +49,13 @@ end
 
 
 
-
--- === Python ===
-require'lspconfig'.pyright.setup{}
-
 -- === C# ===
--- Get latest release `https://github.com/OmniSharp/omnisharp-roslyn/releases`
--- Extract files into `~/.omnisharp/`
 local pid = vim.fn.getpid()
-local omnisharp_bin = "/home/caleb/.omnisharp/run"
+local omnisharp_bin = "/home/caleb/.local/omnisharp/run"
 require'lspconfig'.omnisharp.setup{
     cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) },
     onattach = onattach,
 }
-
-
--- For: html, css, js, ts, angular, docker
--- Optional: install nvm (and uninstall existing node and npm packages).
--- `mkdir ~/.npm-bin &&
---  npm init &&
---  npm install @angular/language-server dockerfile-language-server-nodejs typescript typescript-language-server vscode-langservers-extracted`
--- Add `~/.npm-bin/node_modules/.bin/` to PATH.
 
 -- === html ===
 -- Enable (broadcasting) snippet capability for completion
@@ -106,4 +92,7 @@ require'lspconfig'.angularls.setup{}
 
 -- === Docker ===
 require'lspconfig'.dockerls.setup{}
+
+-- === Python ===
+require'lspconfig'.pyright.setup{}
 EOF
