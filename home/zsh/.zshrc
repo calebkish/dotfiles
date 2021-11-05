@@ -105,7 +105,7 @@ remove_from_path() {
 }
 
 export NVM_DIR="$HOME/.nvm"
-DEFAULT_NODE_VERSION="v16.9.1"
+DEFAULT_NODE_VERSION="v16.10.0"
 export NVM_BIN="$NVM_DIR/versions/node/$DEFAULT_NODE_VERSION/bin"
 load_nvm() {
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -163,3 +163,4 @@ install-zsh-plugins() {
 }
 
 source ~/.zplugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

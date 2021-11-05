@@ -12,12 +12,3 @@ bind J tabnext
 bind K tabprev
 set hintfiltermode vimperator-reflow
 set hintnames numeric
-
-
-" Comment toggler for Reddit, Hacker News and Lobste.rs
-bind ;c hint -Jc [class*="expand"],[class="togg"],[class="comment_folder"]
-
-
-" Only hint search results on Google and DDG
-bindurl ^https://lite.duckduckgo.com/lite f hint -Jc [class=result-link]
-bindurl ^https://lite.duckduckgo.com/lite F hint -Jbc [class=result-link]
