@@ -105,15 +105,19 @@ remove_from_path() {
 
 export NVM_DIR="$HOME/.nvm"
 load_nvm() {
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 }
 
 DEFAULT_NODE_VERSION="v16.10.0"
 export NVM_BIN="$NVM_DIR/versions/node/$DEFAULT_NODE_VERSION/bin"
 export PATH="$NVM_BIN:$PATH"
-export NVM_CD_FLAGS=""
-alias nvm="echo 'Please wait while nvm loads' && unset NVM_CD_FLAGS && remove_from_path $NVM_BIN && unset NVM_BIN && unalias nvm && load_nvm && nvm $@"
+alias nvm="echo 'Please wait while nvm loads' \
+    && remove_from_path $NVM_BIN \
+    && unset NVM_BIN \
+    && unalias nvm \
+    && load_nvm \
+    && nvm $@"
 
 
 
