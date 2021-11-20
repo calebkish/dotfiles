@@ -1,35 +1,18 @@
-button6
-	xte 'key XF86AudioLowerVolume'
+button{6,7}
+	pactl set-sink-volume @DEFAULT_SINK@ {-,+}3%
 
-button7
-	xte 'key XF86AudioRaiseVolume'
+super + bracket{left,right}
+	pactl set-sink-volume @DEFAULT_SINK@ {-,+}3%
 
-XF86AudioLowerVolume
-	pactl set-sink-volume @DEFAULT_SINK@ -3%
-	#amixer -c PCH set Master 3%-
-	#volctl PCH Master 3%-
+XF86Audio{Lower,Raise}Volume
+	pactl set-sink-volume @DEFAULT_SINK@ {-,+}3%
 
-XF86AudioRaiseVolume
-	pactl set-sink-volume @DEFAULT_SINK@ +3%
-	#amixer -c PCH set PCM 3%+
-	#volctl PCH Master 3%+
-
-super + bracketleft
-	pactl set-sink-volume @DEFAULT_SINK@ -3%
-	#xte 'key XF86AudioLowerVolume'
-
-super + bracketright
-	pactl set-sink-volume @DEFAULT_SINK@ +3%
-	#xte 'key XF86AudioRaiseVolume'
-
-super + minus
-	brightctl DP-2 down 0.05
-
-super + equal
-	brightctl DP-2 up 0.05
+super + {minus,equal}
+	brightctl DP-2 {down,up} 0.05
 
 super + s
 	flameshot gui
 
 super + r
 	[ "$(systemctl --user is-active redshift)" = "active" ] && systemctl --user stop redshift || systemctl --user start redshift
+

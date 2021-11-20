@@ -31,6 +31,9 @@ Plug 'windwp/nvim-autopairs'
 
 Plug 'puremourning/vimspector'
 Plug 'szw/vim-maximizer'
+
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax' 
 call plug#end()
 
 

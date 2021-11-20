@@ -113,8 +113,15 @@ DEFAULT_NODE_VERSION="v16.10.0"
 export NVM_BIN="$NVM_DIR/versions/node/$DEFAULT_NODE_VERSION/bin"
 export PATH="$NVM_BIN:$PATH"
 export NVM_CD_FLAGS=""
-alias nvm="echo 'Please wait while nvm loads' && unset NVM_CD_FLAGS && remove_from_path $NVM_BIN && unset NVM_BIN && unalias nvm && load_nvm && nvm $@"
-
+# alias nvm="echo 'Please wait while nvm loads' && unset NVM_CD_FLAGS && remove_from_path $NVM_BIN && unset NVM_BIN && unalias nvm && load_nvm && nvm $@"
+alias nvm="
+echo 'Please wait while nvm loads'
+unset NVM_CD_FLAGS
+remove_from_path $NVM_BIN
+unset NVM_BIN
+unalias nvm
+load_nvm
+nvm $@"
 
 
 
