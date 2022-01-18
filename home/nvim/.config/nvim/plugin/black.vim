@@ -1,1 +1,0 @@
-autocmd BufWrite *.py :Black

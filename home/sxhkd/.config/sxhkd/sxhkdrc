@@ -1,8 +1,8 @@
-button{6,7}
-	pactl set-sink-volume @DEFAULT_SINK@ {-,+}3%
-
 super + bracket{left,right}
 	pactl set-sink-volume @DEFAULT_SINK@ {-,+}3%
+
+XF86AudioMute
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
 
 XF86Audio{Lower,Raise}Volume
 	pactl set-sink-volume @DEFAULT_SINK@ {-,+}3%

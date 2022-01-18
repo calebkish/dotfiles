@@ -1,13 +1,10 @@
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'neovim/nvim-lspconfig'
-"Plug 'nvim-lua/completion-nvim'
 Plug 'hrsh7th/nvim-compe'
 Plug 'gruvbox-community/gruvbox'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'mbbill/undotree'
 
 Plug 'terrortylor/nvim-comment'
-Plug 'kevinhwang91/nvim-bqf'
 
 " Telescope
 Plug 'nvim-lua/plenary.nvim'
@@ -16,25 +13,17 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'ThePrimeagen/harpoon'
 
-" Python
-Plug 'psf/black'
-
-" HTML
 Plug 'windwp/nvim-ts-autotag'
-Plug 'mattn/emmet-vim'
-
-Plug 'roryokane/detectindent'
 
 Plug 'psliwka/vim-smoothie'
-"Plug 'jiangmiao/auto-pairs'
 Plug 'windwp/nvim-autopairs'
 
 Plug 'puremourning/vimspector'
-Plug 'szw/vim-maximizer'
 
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax' 
 call plug#end()
+
 
 
 " === AUTOCOMMANDS ===
@@ -47,6 +36,8 @@ autocmd BufReadPost *
     \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
     \ |   exe "normal! g`\""
     \ | endif
+
+autocmd Filetype html,css,scss,typescript,javascript,json setlocal tabstop=2
 
 
 
@@ -62,9 +53,6 @@ filetype plugin indent on
 set shiftwidth=0 " Number of spaces to use for each step of (auto)indent. 
                  " Used for 'cindent', >>, <<, etc. When zero the 'tabstop'
                  " value will be used.
-set smarttab " <Tab> in front of a line inserts blanks according to 
-             " 'shiftwidth'. <BS> will delete a 'shiftwidth' worth of space at
-             " the start of the line. 'tabstop' will be used in other places.
 set tabstop=4 " Number of spaces that <Tab> counts for. Essentially, "    " 
               " will be equivalent to "\t".
 set softtabstop=-1 " Number of spaces that <Tab> counts for while performing 
@@ -72,10 +60,13 @@ set softtabstop=-1 " Number of spaces that <Tab> counts for while performing
                    " 'shiftwidth' is used. Useful to keep 'ts' at its standard
                    " value while being able to edit like it is set to 'sts'.
 set expandtab " Expand tabs to spaces.
+set smarttab " <Tab> in front of a line inserts blanks according to 
+             " 'shiftwidth'. <BS> will delete a 'shiftwidth' worth of space at
+             " the start of the line. 'tabstop' will be used in other places.
 set nosmartindent " Do smart indenting when starting a new line. Cases: After a 
-                " line ending in '{', after a line starting with a keyword from
-                " 'cinwords', before a line starting with '}' (only with the
-                " "O" command).
+                  " line ending in '{', after a line starting with a keyword from
+                  " 'cinwords', before a line starting with '}' (only with the
+                  " "O" command).
 set autoindent " Copy indent from current line when starting a new line. 
                " 'autoindent' is deferred when 'smartindent' applies.
 set shiftround " Will remove extraneous whitespace before tabs and round to 
@@ -138,7 +129,6 @@ highlight SignColumn guibg=NONE ctermbg=NONE
 " === MAPS ===
 noremap <ScrollWheelUp> <C-Y>
 noremap <ScrollWheelDown> <C-E>
-nnoremap <leader>u :UndotreeShow<CR>
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
 
@@ -191,9 +181,10 @@ let g:netrw_preview=1
 let g:netrw_fastbrowse=0 " Makes netrw buffers close themselves.
 let g:netrw_bufsettings='nonu relativenumber signcolumn=no'
 
-nnoremap <silent><localleader>e :Lexplore!<CR>
+nnoremap <silent><localleader>e :Explore<CR>
 
 augroup netrw_maps
+    " Remove all group autocommands
     autocmd!
     autocmd filetype netrw call ApplyNetrwMaps()
 augroup END
@@ -207,30 +198,12 @@ function ApplyNetrwMaps()
     nmap <buffer> <leader>N d
     " Delete a file
     nmap <buffer> <leader>d D
-    " Preview a file
-    nmap <buffer> p <CR><C-l>
 
     nmap <buffer> l <CR>
     nmap <buffer> h gg<CR>
 
-    "nnoremap <buffer><silent> <Esc> :call <SID>CloseNetrw()<CR>
-    "nnoremap <buffer><silent> <C-c> :call <SID>CloseNetrw()<CR>
-    nnoremap <buffer><silent> <Esc> :Lex!<CR>
-    nnoremap <buffer><silent> <C-c> :Lex!<CR>
-    nmap <buffer><silent> <C-l> :wincmd l<CR>
-endfunction
-
-" Close netrw buffer after closing it.
-function! s:CloseNetrw() abort
-    for bufn in range(1, bufnr('$'))
-        if bufexists(bufn) && getbufvar(bufn, '&filetype') ==# 'netrw'
-            silent! execute 'bwipeout ' . bufn
-            if getline(2) =~# '^" Netrw '
-                silent! bwipeout
-            endif
-            return
-        endif
-    endfor
+    nnoremap <buffer><silent> <Esc> :Rexplore<CR>
+    nnoremap <buffer><silent> <C-c> :Rexplore<CR>
 endfunction
 
 
