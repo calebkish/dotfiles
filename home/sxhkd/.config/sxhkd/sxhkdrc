@@ -1,18 +1,18 @@
 super + bracket{left,right}
-	pactl set-sink-volume @DEFAULT_SINK@ {-,+}3%
+    pactl set-sink-volume @DEFAULT_SINK@ {-,+}3%
 
 XF86AudioMute
     pactl set-sink-mute @DEFAULT_SINK@ toggle
 
 XF86Audio{Lower,Raise}Volume
-	pactl set-sink-volume @DEFAULT_SINK@ {-,+}3%
+    pactl set-sink-volume @DEFAULT_SINK@ {-,+}3%
 
 super + {minus,equal}
-	brightctl DP-2 {down,up} 0.05
+    brightctl DP-2 {down,up} 0.05
 
 super + s
-	flameshot gui
+    flameshot gui
 
 super + r
-	[ "$(systemctl --user is-active redshift)" = "active" ] && systemctl --user stop redshift || systemctl --user start redshift
+    [ "$(systemctl --user is-active redshift)" = "active" ] && systemctl --user stop redshift || systemctl --user start redshift
 

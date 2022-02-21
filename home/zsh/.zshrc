@@ -62,7 +62,7 @@ lfcd () {
     fi
 }
 bindkey -s '^o' 'lfcd\n'
-bindkey -s '^a' 'bc -lq\n'
+# bindkey -s '^a' 'bc -lq\n'
 bindkey -s '^f' 'cd "$(dirname "$(fzf)")"\n'
 
 # Edit line in vim with ctrl-e:
@@ -72,30 +72,35 @@ bindkey '^e' edit-command-line
 alias ls='ls -hN --color=always --group-directories-first'
 alias cp='cp -iv'
 alias mv='mv -iv'
-alias rm='rm'
-alias mkdir='mkdir -pv'
+alias mkdir='mkdir -p'
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
 
 alias ll='ls -al'
-alias lt='ls --human-readable --size -1 -S --classify'
 alias untar='tar -zxvf'
+
 alias ae="source venv/bin/activate"
 alias de="deactivate"
 alias ce="python3 -m venv venv"
 alias ie="pip install --upgrade pip ; pip3 install -r requirements.txt"
+
 alias ng="npm run ng"
 
 PROMPT='%B%1~%f %#%b '
 
-if [ -z $WSL_INTEROP -a -z $WSLENV -a -z $WSL_DISTRO_NAME ]; then
-else
-    [ -n "$(pwd | grep /mnt/c/Users/)" ] && cd
-fi
+# if [ -z $WSL_INTEROP -a -z $WSLENV -a -z $WSL_DISTRO_NAME ]; then
+# else
+#     [ -n "$(pwd | grep /mnt/c/Users/)" ] && cd
+# fi
 
 
-
-
+# Git clone bare
+gcb() {
+    repo=$1
+    plug_dir_name="${repo##*/}"
+    plug_dir_name="${plug_dir_name%%.git}"
+    git clone $repo --bare "$plug_dir_name/.git"
+}
 
 remove_from_path() {
     path_fragment="$1"
@@ -109,13 +114,11 @@ load_nvm() {
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 }
 
-DEFAULT_NODE_VERSION="v16.10.0"
+DEFAULT_NODE_VERSION="v16.14.0"
 export NVM_BIN="$NVM_DIR/versions/node/$DEFAULT_NODE_VERSION/bin"
 export PATH="$NVM_BIN:$PATH"
-export NVM_CD_FLAGS=""
 alias nvm="
 echo 'Please wait while nvm loads'
-unset NVM_CD_FLAGS
 remove_from_path $NVM_BIN
 unset NVM_BIN
 unalias nvm

@@ -6,12 +6,16 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 Plug 'terrortylor/nvim-comment'
 
-" Telescope
+" Needed for telescope and git-worktree.nvim
 Plug 'nvim-lua/plenary.nvim'
+
+" Telescope
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'ThePrimeagen/harpoon'
+
+Plug 'ThePrimeagen/git-worktree.nvim'
 
 Plug 'windwp/nvim-ts-autotag'
 
@@ -24,7 +28,7 @@ Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax' 
 call plug#end()
 
-
+let g:pandoc#syntax#conceal#use="0"
 
 " === AUTOCOMMANDS ===
 
@@ -100,10 +104,9 @@ set formatoptions-=tro
 set formatoptions+=c
 set textwidth=80
 
-set wildmode=longest,list,full
+set wildmode=list:full
 set wildmenu
-" Ignore files
-set wildignore+=**/venv/*
+set wildignore+=**/.git/**,**/__pycache__/**,**/venv/**,**/node_modules/**,**/dist/**,**/build/**,*.o,*.pyc,*.swp
 
 " Where `gf` and `:find` look for files.
 set path-=/usr/include

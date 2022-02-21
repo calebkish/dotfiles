@@ -1,1 +1,4 @@
 Xcursor.size: 16
+Nsxiv.window.background: #282828
+Nsxiv.window.foreground: #ebdbb2
+Nsxiv.bar.font: Liberation Sans

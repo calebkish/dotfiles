@@ -37,9 +37,8 @@ map O $mimeopen --ask $f
 # text files and a file opener for the rest.
 cmd open ${{
     case $(file --mime-type $f -b) in
-        text/*) $EDITOR $fx;;
-        image/*) sxiv $fx;;
-        *) for f in $fx; do setsid $OPENER $f > /dev/null 2> /dev/null & done;;
+        text/*) "$EDITOR" "$fx";;
+        *) nohup xdg-open "$fx" 2>/dev/null 1>/dev/null &;;
     esac
 }}
 
