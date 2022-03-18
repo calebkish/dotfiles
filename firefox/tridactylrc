@@ -12,3 +12,5 @@ bind J tabnext
 bind K tabprev
 set hintfiltermode vimperator-reflow
 set hintnames numeric
+set searchurls.@gh https://git.rockfin.com/search?type=&q=%s
+bind \ fillcmdline tabopen @gh
