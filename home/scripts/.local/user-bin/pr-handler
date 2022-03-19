@@ -1,0 +1,112 @@
+#!/usr/bin/env sh
+
+try_checkout() {
+    (
+        cd "$REPOS_DIR/$REPO_NAME"
+
+        IS_REPO_CLEAN="$(git status | grep "nothing to commit, working tree clean")"
+
+        if [ ! "$IS_REPO_CLEAN" ]; then
+            echo "The repo is not clean. What would you like to do?"
+            SELECTED=$(echo "Stash changes\nExit" | fzf)
+
+            if [ "$SELECTED" = "Stash changes" ]; then
+                git stash
+                gh pr checkout "$PR_NUM"
+            else
+                exit 1
+            fi
+        else
+            gh pr checkout "$PR_NUM"
+        fi
+    )
+}
+
+export FZF_DEFAULT_OPTS="--height=40% --layout=reverse --info=inline --border --margin=1"
+
+# Config options later
+GH_ORIGIN="https://git.rockfin.com"
+REPOS_DIR="/home/caleb/git"
+
+URL="$1"
+
+ESCAPED_GH_ORIGIN="$(echo "$GH_ORIGIN" | sed -r "s|\/|\\\/|g" | sed -r "s|\.|\\\.|g")"
+ALPHANUM_GROUP="([A-Za-z0-9_.-]+)"
+NUM_GROUP="([0-9]+)"
+URL_PATTERN="$ESCAPED_GH_ORIGIN\/$ALPHANUM_GROUP\/?$ALPHANUM_GROUP?\/?$ALPHANUM_GROUP?\/?$NUM_GROUP?$"
+
+ORG_NAME="$(echo "$URL" | sed -r -n "s|$URL_PATTERN|\1|p")"
+REPO_NAME="$(echo "$URL" | sed -r -n "s|$URL_PATTERN|\2|p")"
+TAB="$(echo "$URL" | sed -r -n "s|$URL_PATTERN|\3|p")"
+PR_NUM="$(echo "$URL" | sed -r -n "s|$URL_PATTERN|\4|p")"
+
+if [ ! "$ORG_NAME" -o ! "$REPO_NAME" ]; then
+    echo "ERROR: Provided URL is invalid or is missing organization and/or repo name in path. Exiting..."
+    sleep 2
+    exit
+fi
+
+echo "Organization: $ORG_NAME"
+echo "Repo: $REPO_NAME"
+echo ""
+
+if [ ! -d "$REPOS_DIR/$REPO_NAME" ]; then
+    echo "No existing clone of $ORG_NAME/$REPO_NAME exists. What would you like to do?"
+    OPTION_1="Fork repo & clone fork & add upstream remote"
+    OPTION_2="Clone repo"
+    OPTION_3="Exit"
+    SELECTED="$(echo "$OPTION_1\n$OPTION_2\n$OPTION_3" | fzf)"
+
+    REPO_GIT_URL="$GH_ORIGIN/$ORG_NAME/$REPO_NAME.git"
+
+    if [ "$SELECTED" = "$OPTION_1" ]; then
+        gh repo fork "$REPO_GIT_URL" --clone --remote "$REPOS_DIR/$REPO_NAME"
+    elif [ "$SELECTED" = "$OPTION_2" ]; then
+        git clone "$REPO_GIT_URL" "$REPOS_DIR"
+    else
+        exit
+    fi
+
+    echo ""
+fi
+
+# Open the repo in VS code if TAB and PR_NUM are missing in URL path.
+if [ ! "$TAB" -o ! "$PR_NUM" ]; then
+    code "$REPOS_DIR/$REPO_NAME"
+    exit
+fi
+
+echo "PR number: $PR_NUM"
+
+(
+    cd "$REPOS_DIR/$REPO_NAME"
+
+    if [ -e "package-lock.json" ]; then
+        cat package-lock.json > /tmp/ph-old-package-lock.json
+        try_checkout || exit
+        cat package-lock.json > /tmp/ph-new-package-lock.json
+
+        echo ""
+        HAS_CHANGED="$(diff /tmp/ph-old-package-lock.json /tmp/ph-new-package-lock.json)"
+        echo ""
+
+        if [ "$HAS_CHANGED" ]; then
+            echo "package-lock.json was changed in PR ${PR_NUM}. Would you like to refresh node_modules?"
+            diff /tmp/ph-old-package-lock.json /tmp/ph-new-package-lock.json
+            SELECTED="$(echo "Yes\nNo" | fzf)"
+
+            if [ "$SELECTED" = "Yes" ]; then
+                npm install
+            elif [ "$SELECTED" = "No" ]; then
+                true
+            else
+                exit
+            fi
+        fi
+    else
+        try_checkout || exit
+    fi
+
+    code .
+)
+

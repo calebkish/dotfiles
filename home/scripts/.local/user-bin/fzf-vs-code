@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+THING="$(find '/home/caleb/git' -maxdepth 1 -mindepth 1 -type d | fzf --margin=0,100,0,0 --reverse --delimiter='/' --with-nth='5' --preview='cd {} && git status')"
+
+if [ "$THING" ]; then
+    code "$THING"
+fi
+
