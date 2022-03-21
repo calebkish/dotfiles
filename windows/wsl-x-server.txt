@@ -1,0 +1,39 @@
+# Steps
+
+## vcxsrv
+* Set this as config.xlaunch:
+
+## Multiple windows
+<?xml version="1.0" encoding="UTF-8"?>
+<XLaunch WindowMode="MultiWindow" ClientMode="NoClient" LocalClient="False" Display="0" LocalProgram="xcalc" RemoteProgram="xterm" RemotePassword="" PrivateKey="" RemoteHost="" RemoteUser="" XDMCPHost="" XDMCPBroadcast="False" XDMCPIndirect="False" Clipboard="True" ClipboardPrimary="True" ExtraParams="-ac" Wgl="True" DisableAC="True" XDMCPTerminate="False"/>
+
+### One large window -- for a window manager
+<?xml version="1.0" encoding="UTF-8"?>
+<XLaunch WindowMode="Windowed" ClientMode="NoClient" LocalClient="False" Display="0" LocalProgram="xcalc" RemoteProgram="xterm" RemotePassword="" PrivateKey="" RemoteHost="" RemoteUser="" XDMCPHost="" XDMCPBroadcast="False" XDMCPIndirect="False" Clipboard="True" ClipboardPrimary="True" ExtraParams="-ac" Wgl="True" DisableAC="True" XDMCPTerminate="False"/>
+
+
+## Setup
+powershell: wsl --terminate
+powershell: wsl --install -d Ubuntu
+sudo apt update && sudo apt upgrade
+sudo apt install awesome
+
+
+## Install chrome
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt install ./google-chrome-stable_current_amd64.deb
+
+
+## Firewall
+* Create inbound rule exposing port 6000. Name it "Expose VcXsrv to WSL".
+* Right click the rule, Properties, Scope, then add IP of WSL. (run `ip a` in WSL to get it).
+* Or, add the range of WSL IPs: 172.17.0.0/12
+
+
+
+## Run graphical program
+* https://docs.microsoft.com/en-us/windows/wsl/networking#accessing-windows-networking-apps-from-linux-host-ip
+* The IP of your host machine is in `/etc/resolv.conf`
+
+export DISPLAY="172.17.240.1:0"
+google-chrome
