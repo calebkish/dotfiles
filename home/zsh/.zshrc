@@ -88,10 +88,12 @@ alias ng="npm run ng"
 
 PROMPT='%B%1~%f %#%b '
 
-# if [ -z $WSL_INTEROP -a -z $WSLENV -a -z $WSL_DISTRO_NAME ]; then
-# else
-#     [ -n "$(pwd | grep /mnt/c/Users/)" ] && cd
-# fi
+if [ -z $WSL_INTEROP -a -z $WSLENV -a -z $WSL_DISTRO_NAME ]; then
+    true
+else
+    # [ -n "$(pwd | grep /mnt/c/Users/)" ] && cd
+    export DISPLAY="$(cat /etc/resolv.conf | grep 'nameserver' | awk '{print $2}'):0"
+fi
 
 
 # Git clone bare
