@@ -18,3 +18,4 @@ export PAGER="less"
 export LESSHISTFILE="-" # Disable less history file
 export TERM="xterm-256color"
 export DOTNET_CLI_TELEMETRY_OPTOUT="1"
+export GTK_THEME="Adwaita:dark"

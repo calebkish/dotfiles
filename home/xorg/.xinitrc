@@ -9,6 +9,7 @@ fi
 
 xrdb -merge ~/.Xresources
 remaps
+redshift &
 killall picom 2>/dev/null ; picom --config ~/.config/picom/picom.conf &
 killall unclutter 2>/dev/null ; unclutter --timeout 2 &
 
