@@ -15,5 +15,6 @@ else
     export SSL_CERT_DIR="/home/caleb/certificates/"
     export SSL_CERT_FILE="/home/caleb/certificates/ql-combined-certificate.crt"
     export NODE_EXTRA_CA_CERTS="$HOME/certificates/ql-combined-certificate.crt"
+    export DISPLAY="$(cat /etc/resolv.conf | grep 'nameserver' | awk '{print $2}'):0"
     wsl.exe -d wsl-vpnkit service wsl-vpnkit start 2>/dev/null
 fi

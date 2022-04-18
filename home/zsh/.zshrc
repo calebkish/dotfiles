@@ -88,17 +88,16 @@ alias ng="npm run ng"
 
 PROMPT='%B%1~%f %#%b '
 
-if [ -z $WSL_INTEROP -a -z $WSLENV -a -z $WSL_DISTRO_NAME ]; then
-    true
-else
-    # [ -n "$(pwd | grep /mnt/c/Users/)" ] && cd
-    export DISPLAY="$(cat /etc/resolv.conf | grep 'nameserver' | awk '{print $2}'):0"
-fi
+# if [ -z $WSL_INTEROP -a -z $WSLENV -a -z $WSL_DISTRO_NAME ]; then
+#     true
+# else
+#     # [ -n "$(pwd | grep /mnt/c/Users/)" ] && cd
+# fi
 
 
 # Git clone bare
 gcb() {
-    repo=$1
+    repo="$1"
     plug_dir_name="${repo##*/}"
     plug_dir_name="${plug_dir_name%%.git}"
     git clone $repo --bare "$plug_dir_name/.git"
@@ -113,7 +112,6 @@ remove_from_path() {
 NVM_DIR="$HOME/.nvm"
 load_nvm() {
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 }
 
 DEFAULT_NODE_VERSION="v16.14.2"
@@ -170,4 +168,3 @@ install-zsh-plugins() {
 }
 
 source ~/.zplugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
-
