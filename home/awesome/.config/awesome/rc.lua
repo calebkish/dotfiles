@@ -229,8 +229,20 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
-    awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
-              {description="show help", group="awesome"}),
+    awful.key({}, "XF86AudioLowerVolume", function () awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -3%") end,
+              {description = "volume down", group = "custom"}),
+    awful.key({}, "XF86AudioRaiseVolume", function () awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +3%") end,
+              {description = "volume up", group = "custom"}),
+    awful.key({}, "XF86AudioMute", function () awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle") end,
+              {description = "mute", group = "custom"}),
+    awful.key({ modkey,           }, "]", function () awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +3%") end,
+              {description = "volume up", group = "custom"}),
+    awful.key({ modkey,           }, "r", function () awful.spawn("awm-redshift.sh") end,
+              {description = "redshift", group = "custom"}),
+    awful.key({ modkey,           }, "s", function () awful.spawn("awm-flameshot.sh") end,
+              {description = "take screenshot", group = "custom"}),
+    -- awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
+    --           {description="show help", group="awesome"}),
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
               {description = "view previous", group = "tag"}),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
@@ -311,8 +323,8 @@ globalkeys = gears.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
-              {description = "run prompt", group = "launcher"}),
+    -- awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
+    --           {description = "run prompt", group = "launcher"}),
 
     awful.key({ modkey }, "x",
               function ()
