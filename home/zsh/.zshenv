@@ -11,8 +11,10 @@ typeset -U PATH path
 path=("$HOME/.local/user-bin" "$HOME/.cargo/bin" "$HOME/.local/npm-bin/node_modules/.bin" "$NVM_BIN" "$path[@]")
 export PATH
 
-
 export OPENER="xdg-open"
 export EDITOR="nvim"
 export PAGER="less"
 
+export LESSHISTFILE="-" # Disable less history file
+export TERM="xterm-256color"
+export DOTNET_CLI_TELEMETRY_OPTOUT="1"
