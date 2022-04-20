@@ -1,3 +1,5 @@
+-- vim.api.nvim_create_augroup()
+
 vim.cmd([[
 
 augroup file_format_options

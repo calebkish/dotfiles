@@ -1,4 +1,4 @@
-lib = require('lib.lib')
+local lib = require('lib.lib')
 
 lib.map('', '<Space>', '<Nop>')
 vim.g.mapleader = ' '
@@ -10,10 +10,6 @@ lib.map('n', '<Esc>', ':nohlsearch<CR>:let @/ = ""<CR>')
 -- Delete without polluting the clipboard register (+)
 lib.map('n', '<Leader>d', '"_d')
 lib.map('v', '<Leader>d', '"_d')
--- Use current init.vim version
--- lib.map('n', '<Leader>r', ':source ~/.config/nvim/init.lua<CR>')
--- Check file in shellcheck
--- lib.map('n', '<Leader>s', ':!clear && shellcheck %<CR>')
 -- x and X no longer is put in + register
 lib.map('n', 'x', '"_x')
 lib.map('n', 'X', '"_X')
@@ -28,7 +24,7 @@ lib.map('n', 'J', 'mzJ`z')
 lib.map('n', '<C-j>', ':cnext<CR>zzzv')
 lib.map('n', '<C-k>', ':cprev<CR>zzzv')
 
--- Undo breakpoints (i_CTRL-G will break the current undo sequence & start a
+-- Undo breakpoints (i_CTRL-G will break the current undo sequence & start an
 -- undo sequence)
 lib.map('i', ',', ',<C-g>u')
 lib.map('i', '.', '.<C-g>u')
@@ -70,3 +66,24 @@ lib.map('n', '<C-h>', '<Cmd>lprev<CR>')
 -- `s`
 -- `r`
 -- `K` unless it has special meaning for LSP
+
+lib.map('n', '<Leader>h', '<Cmd>so $VIMRUNTIME/syntax/hitest.vim<CR>')
+
+
+vim.cmd([[
+if !exists('*Save_and_exec')
+    function! Save_and_exec() abort
+        if &filetype == 'vim'
+            :silent! write
+            :source %
+        elseif &filetype == 'lua'
+            :silent! write
+            :luafile %
+        endif
+
+        return
+    endfunction
+endif
+
+nnoremap <leader>s :call Save_and_exec()<CR>
+]])

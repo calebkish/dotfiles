@@ -78,17 +78,47 @@ require'lspconfig'.omnisharp.setup{
     },
 }
 
+-- === Lua ===
+local runtime_path = vim.split(package.path, ';')
+table.insert(runtime_path, "lua/?.lua")
+table.insert(runtime_path, "lua/?/init.lua")
+local lua_ls_bin = "/home/caleb/.local/lua-language-server/bin/lua-language-server"
+require 'lspconfig'.sumneko_lua.setup{
+    capabilities = capabilities,
+    cmd = { lua_ls_bin },
+    on_attach = on_attach,
+    flags = {
+        debounce_text_changes = 150,
+    },
+    settings = {
+        Lua = {
+            runtime = {
+                version = 'LuaJIT',
+                -- Setup your lua path
+                path = runtime_path,
+            },
+            diagnostics = {
+                -- Get the language server to recognize the `vim` global
+                globals = {'vim'},
+            },
+            workspace = {
+                -- Make the server aware of Neovim runtime files
+                library = vim.api.nvim_get_runtime_file("", true),
+            },
+            telemetry = {
+                enable = false,
+            },
+        },
+    },
+}
 
--- For: html, css, js, ts, angular, docker
+-- For: html, css, js, ts, angular, docker, markdown
 -- `mkdir ~/.npm-bin &&
 --  npm init &&
 --  npm install @angular/language-server dockerfile-language-server-nodejs typescript typescript-language-server vscode-langservers-extracted`
 -- Add `~/.npm-bin/node_modules/.bin/` to PATH.
 
 -- === html ===
--- Enable (broadcasting) snippet capability for completion
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
 require'lspconfig'.html.setup {
     capabilities = capabilities,
     on_attach = on_attach,

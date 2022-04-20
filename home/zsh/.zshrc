@@ -141,10 +141,23 @@ install-nvim-deps() {
         typescript-language-server \
         vscode-langservers-extracted
 
-    mkdir -p ~/.local/omnisharp
-    cd ~/.local/omnisharp
-    wget "https://github.com/OmniSharp/omnisharp-roslyn/releases/latest/download/omnisharp-linux-x64.tar.gz"
-    tar -xzf "omnisharp-linux-x64.tar.gz"
+    (
+        mkdir -p ~/.local/omnisharp
+        cd ~/.local/omnisharp
+        wget "https://github.com/OmniSharp/omnisharp-roslyn/releases/latest/download/omnisharp-linux-x64.tar.gz"
+        tar -xzf "omnisharp-linux-x64.tar.gz"
+    )
+
+    (
+        cd ~/.local
+        git clone https://github.com/sumneko/lua-language-server
+        cd lua-language-server
+        git submodule update --init --recursive
+        cd 3rd/luamake
+        ./compile/install.sh
+        cd ../..
+        ./3rd/luamake/luamake rebuild
+    )
 }
 
 install-tmux-deps() {

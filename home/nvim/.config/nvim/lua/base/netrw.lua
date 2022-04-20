@@ -1,3 +1,5 @@
+local lib = require('lib.lib')
+
 -- === NETRW ===
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
@@ -5,7 +7,7 @@ vim.g.netrw_winsize = 25
 vim.g.netrw_localrmdir = 'rm -r'
 vim.g.netrw_preview = 1
 vim.g.netrw_fastbrowse = 0 -- Makes netrw buffers close themselves.
-vim.g.netrw_bufsettings = 'nonu relativenumber signcolumn=no'
+vim.g.netrw_bufsettings = 'nonu signcolumn=no'
 
 lib.map('n', '<Localleader>e', ':Explore<CR>')
 
