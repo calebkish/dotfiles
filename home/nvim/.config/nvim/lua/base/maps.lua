@@ -7,19 +7,25 @@ vim.g.maplocalleader = '\\'
 
 -- Stop highlighting the current search
 lib.map('n', '<Esc>', ':nohlsearch<CR>:let @/ = ""<CR>')
+
 -- Delete without polluting the clipboard register (+)
 lib.map('n', '<Leader>d', '"_d')
 lib.map('v', '<Leader>d', '"_d')
+
 -- x and X no longer is put in + register
 lib.map('n', 'x', '"_x')
 lib.map('n', 'X', '"_X')
+
 -- Don't do anything when <F15> is typed
 lib.map('', '<F15>', '<nop>')
+
 -- Keep things centered when moving to next/prev search match
 lib.map('n', 'n', 'nzzzv')
 lib.map('n', 'N', 'Nzzzv')
+
 -- Keep the cursor in place when joining lines
 lib.map('n', 'J', 'mzJ`z')
+
 -- Keep things centered when moving to next/prev quick fix list item
 lib.map('n', '<C-j>', ':cnext<CR>zzzv')
 lib.map('n', '<C-k>', ':cprev<CR>zzzv')
@@ -47,15 +53,15 @@ lib.map('n', '<Leader>k', ':m .-2<CR>==')
 -- See buffers
 -- lib.map('n', 'S', ':ls<CR>')
 
--- lib.map('', '<C-h>', ':wincmd h<CR>')
--- lib.map('', '<C-j>', ':wincmd j<CR>')
--- lib.map('', '<C-k>', ':wincmd k<CR>')
--- lib.map('', '<C-l>', ':wincmd l<CR>')
+lib.map('', '<C-h>', ':wincmd h<CR>')
+lib.map('', '<C-j>', ':wincmd j<CR>')
+lib.map('', '<C-k>', ':wincmd k<CR>')
+lib.map('', '<C-l>', ':wincmd l<CR>')
 
-lib.map('n', '<C-j>', '<Cmd>cnext<CR>')
-lib.map('n', '<C-k>', '<Cmd>cprev<CR>')
-lib.map('n', '<C-l>', '<Cmd>lnext<CR>')
-lib.map('n', '<C-h>', '<Cmd>lprev<CR>')
+-- lib.map('n', '<C-j>', '<Cmd>cnext<CR>')
+-- lib.map('n', '<C-k>', '<Cmd>cprev<CR>')
+-- lib.map('n', '<C-l>', '<Cmd>lnext<CR>')
+-- lib.map('n', '<C-h>', '<Cmd>lprev<CR>')
 
 
 -- Keys free to map:
@@ -69,21 +75,4 @@ lib.map('n', '<C-h>', '<Cmd>lprev<CR>')
 
 lib.map('n', '<Leader>h', '<Cmd>so $VIMRUNTIME/syntax/hitest.vim<CR>')
 
-
-vim.cmd([[
-if !exists('*Save_and_exec')
-    function! Save_and_exec() abort
-        if &filetype == 'vim'
-            :silent! write
-            :source %
-        elseif &filetype == 'lua'
-            :silent! write
-            :luafile %
-        endif
-
-        return
-    endfunction
-endif
-
-nnoremap <leader>s :call Save_and_exec()<CR>
-]])
+lib.map('n', '<Leader>x', ':silent write<CR>:source %<CR>')

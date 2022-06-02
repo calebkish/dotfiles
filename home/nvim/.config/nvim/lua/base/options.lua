@@ -1,5 +1,5 @@
 -- Number of spaces to use for each step of (auto)indent. Used for 'cindent',
--- >>, <<, etc. When zero the 'tabstop' value will be used.
+-- >>, <<, etc. When `0`, the 'tabstop' value will be used.
 vim.opt.shiftwidth = 0
 
 -- Number of spaces that <Tab> counts for. Essentially, "    " will be
@@ -28,19 +28,21 @@ vim.opt.smartindent = false
 -- deferred when 'smartindent' applies.
 vim.opt.autoindent = true
 
--- Will remove extraneous whitespace before tabs and round to 
+-- Will remove extraneous whitespace before tabs and round to
 -- multiple of 'shiftwidth'.
 vim.opt.shiftround = true
 
 vim.opt.encoding = 'utf-8'
 
+-- Always keep the cursor centered.
 vim.opt.scrolloff = 1000
 
 vim.opt.hlsearch = true
 
 vim.opt.ignorecase = true
 
-vim.opt.smartcase = true -- case insensitive unless search contains captial letter
+-- case insensitive unless search contains captial letter
+vim.opt.smartcase = true
 
 vim.opt.errorbells = false
 
@@ -57,9 +59,7 @@ vim.opt.sidescroll = 1
 vim.opt.sidescrolloff = 5
 
 vim.opt.listchars:append('tab:>-')
-
 vim.opt.listchars:append('precedes:<')
-
 vim.opt.listchars:append('extends:>')
 
 -- shows list chars (above this line)
@@ -69,9 +69,11 @@ vim.opt.hidden = true
 
 vim.opt.mouse = 'a'
 
+-- Show number on lines based on how far they are from current line, except...
 vim.opt.relativenumber = true
 
-vim.opt.nu = true
+-- ...the current line will show the actual line number.
+vim.opt.number = true
 
 vim.opt.swapfile = false
 
@@ -82,13 +84,14 @@ vim.opt.undofile = true
 -- use vim configuration in current working directory.
 vim.opt.exrc = true
 
+-- Insert only one space instead of two between lines when using `J`.
 vim.opt.joinspaces = false
 
 -- Disable automatic folding.
-vim.opt.foldenable = false 
+vim.opt.foldenable = false
 
+-- @TODO: Text doesn't automatically wrap
 vim.opt.formatoptions:remove('tro')
-
 vim.opt.formatoptions:append('c')
 
 vim.opt.textwidth = 80
@@ -119,3 +122,8 @@ vim.opt.splitbelow = true
 
 vim.opt.splitright = true
 
+-- :lua =vim.api.nvim_get_option('cpoptions')
+-- :lua =vim.opt.cpoptions:get()
+-- vim.opt.cpoptions:remove('a')
+
+vim.opt.pumheight = 10

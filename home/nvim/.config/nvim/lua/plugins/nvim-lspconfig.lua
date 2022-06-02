@@ -1,12 +1,14 @@
--- @TODO steup json lsp schemas
+-- @TODO setup json lsp schemas
+
+local lsp_util = require('lspconfig.util')
 
 local status_ok, lspconfig = pcall(require, 'lspconfig')
 if not status_ok then
     return
 end
 
-local status_ok, cmp = pcall(require, 'cmp_nvim_lsp')
-if not status_ok then
+local cmp_ok, cmp = pcall(require, 'cmp_nvim_lsp')
+if not cmp_ok then
     return
 end
 
@@ -57,7 +59,7 @@ capabilities = cmp.update_capabilities(capabilities)
 
 
 -- === Python ===
-require'lspconfig'.pyright.setup{
+lspconfig.pyright.setup{
     capabilities = capabilities,
     on_attach = on_attach,
     flags = {
@@ -66,10 +68,11 @@ require'lspconfig'.pyright.setup{
 }
 
 
+
 -- === C# ===
 local pid = vim.fn.getpid()
 local omnisharp_bin = "/home/caleb/.local/omnisharp/run"
-require'lspconfig'.omnisharp.setup{
+lspconfig.omnisharp.setup{
     capabilities = capabilities,
     cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) },
     on_attach = on_attach,
@@ -83,7 +86,7 @@ local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
 local lua_ls_bin = "/home/caleb/.local/lua-language-server/bin/lua-language-server"
-require 'lspconfig'.sumneko_lua.setup{
+lspconfig.sumneko_lua.setup{
     capabilities = capabilities,
     cmd = { lua_ls_bin },
     on_attach = on_attach,
@@ -115,11 +118,11 @@ require 'lspconfig'.sumneko_lua.setup{
 -- For: html, css, js, ts, angular, docker, markdown
 -- `mkdir ~/.npm-bin &&
 --  npm init &&
---  npm install @angular/language-server dockerfile-language-server-nodejs typescript typescript-language-server vscode-langservers-extracted`
+--  npm install dockerfile-language-server-nodejs typescript-language-server vscode-langservers-extracted`
 -- Add `~/.npm-bin/node_modules/.bin/` to PATH.
 
 -- === html ===
-require'lspconfig'.html.setup {
+lspconfig.html.setup {
     capabilities = capabilities,
     on_attach = on_attach,
     flags = {
@@ -128,7 +131,7 @@ require'lspconfig'.html.setup {
 }
 
 -- === css ===
-require'lspconfig'.cssls.setup {
+lspconfig.cssls.setup {
     capabilities = capabilities,
     on_attach = on_attach,
     flags = {
@@ -137,16 +140,22 @@ require'lspconfig'.cssls.setup {
 }
 
 -- === js/ts ===
-require'lspconfig'.tsserver.setup{
+lspconfig.tsserver.setup{
     capabilities = capabilities,
     on_attach = on_attach,
     flags = {
         debounce_text_changes = 150,
     },
+    cmd = {
+        'typescript-language-server',
+        '--stdio',
+        '--tsserver-path',
+        vim.loop.cwd() .. '/node_modules/.bin/tsserver'
+    }
 }
 
 -- === json ===
-require'lspconfig'.jsonls.setup {
+lspconfig.jsonls.setup {
     capabilities = capabilities,
     commands = {
         Format = {
@@ -161,17 +170,31 @@ require'lspconfig'.jsonls.setup {
     },
 }
 
+
 -- === Angular ===
-require'lspconfig'.angularls.setup{
+local ngServerCmd = {
+    vim.loop.cwd() .. '/node_modules/.bin/ngserver',
+    '--stdio',
+    '--tsProbeLocations',
+    vim.loop.cwd() .. '/node_modules',
+    '--ngProbeLocations',
+    vim.loop.cwd() .. '/node_modules'
+}
+lspconfig.angularls.setup{
     capabilities = capabilities,
     on_attach = on_attach,
     flags = {
         debounce_text_changes = 150,
     },
+    cmd = ngServerCmd,
+    on_new_config = function(new_config, new_root_dir)
+        new_config.cmd = ngServerCmd
+    end,
+    root_dir = lsp_util.root_pattern('angular.json'),
 }
 
 -- === Docker ===
-require'lspconfig'.dockerls.setup{
+lspconfig.dockerls.setup{
     capabilities = capabilities,
     on_attach = on_attach,
     flags = {

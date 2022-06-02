@@ -1,3 +1,6 @@
+vim.api.nvim_create_augroup('init', {})
+
+require('lib.global')
 require('base.packer')
 require('base.options')
 require('base.theming')

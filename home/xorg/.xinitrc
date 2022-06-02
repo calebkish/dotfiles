@@ -9,8 +9,8 @@ fi
 
 xrdb -merge ~/.Xresources
 remaps
-redshift &
-killall picom 2>/dev/null ; picom --config ~/.config/picom/picom.conf &
+killall redshift 2>/dev/null ; redshift &
+killall picom 2>/dev/null ; picom --experimental-backends --config ~/.config/picom/picom.conf &
 killall unclutter 2>/dev/null ; unclutter --timeout 2 &
 
 # Will replace TTY shell process with awesome process

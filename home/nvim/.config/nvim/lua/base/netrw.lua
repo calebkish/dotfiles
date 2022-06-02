@@ -28,6 +28,7 @@ vim.cmd([[
         nmap <buffer> l <CR>
         nmap <buffer> h gg<CR>
 
+        nmap <buffer><nowait><silent> q :Rexplore<CR>
         nnoremap <buffer><silent> <Esc> :Rexplore<CR>
         nnoremap <buffer><silent> <C-c> :Rexplore<CR>
     endfunction

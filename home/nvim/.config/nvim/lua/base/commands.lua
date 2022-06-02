@@ -26,6 +26,12 @@ augroup markdown_autocmd
     autocmd Filetype markdown TSDisable highlight
 augroup END
 
-command! -range JSONFormat <line1>,<line2>!python -m json.tool
 
 ]])
+
+vim.api.nvim_create_user_command('JSONFormat', function(args)
+    local range = args.line1 .. ',' .. args.line2
+    local filter_cmd = '!' -- See `:help range!`
+    local shell_cmd = 'python -m json.tool'
+    vim.cmd(range .. filter_cmd .. shell_cmd)
+end, { nargs = 0, range = true })

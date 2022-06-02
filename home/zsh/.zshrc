@@ -135,9 +135,7 @@ install-nvim-deps() {
     npm init --yes
     npm install \
         pyright \
-        @angular/language-server \
         dockerfile-language-server-nodejs \
-        typescript \
         typescript-language-server \
         vscode-langservers-extracted
 
