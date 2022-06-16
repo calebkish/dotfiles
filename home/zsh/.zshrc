@@ -88,65 +88,61 @@ alias ng="npm run ng"
 
 PROMPT='%B%1~%f %#%b '
 
-if [ -z $WSL_INTEROP -a -z $WSLENV -a -z $WSL_DISTRO_NAME ]; then
-    true
-else
-    # [ -n "$(pwd | grep /mnt/c/Users/)" ] && cd
-    export DISPLAY="$(cat /etc/resolv.conf | grep 'nameserver' | awk '{print $2}'):0"
-fi
+# if [ -z $WSL_INTEROP -a -z $WSLENV -a -z $WSL_DISTRO_NAME ]; then
+#     true
+# else
+#     # [ -n "$(pwd | grep /mnt/c/Users/)" ] && cd
+# fi
 
 
 # Git clone bare
 gcb() {
-    repo=$1
+    repo="$1"
     plug_dir_name="${repo##*/}"
     plug_dir_name="${plug_dir_name%%.git}"
     git clone $repo --bare "$plug_dir_name/.git"
 }
 
-remove_from_path() {
-    path_fragment="$1"
-    path_fragment_index=${path[(i)$path_fragment]}
-    path[$path_fragment_index]=()
-}
-
-NVM_DIR="$HOME/.nvm"
-load_nvm() {
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-}
-
-DEFAULT_NODE_VERSION="v16.14.2"
-NVM_BIN="$NVM_DIR/versions/node/$DEFAULT_NODE_VERSION/bin"
-PATH="$NVM_BIN:$PATH"
-alias nvm="
-echo 'Please wait while nvm loads'
-remove_from_path $NVM_BIN
-unset NVM_BIN
-unalias nvm
-load_nvm
-nvm $@"
-
-
 
 install-nvim-deps() {
-    pip3 install --user neovim
+    # Python, HTML, CSS, JS, TS, JSON, Docker
+    (
+        mkdir -p ~/.local/npm-bin
+        cd ~/.local/npm-bin
+        npm install \
+            pyright \
+            dockerfile-language-server-nodejs \
+            typescript-language-server \
+            vscode-langservers-extracted
+    )
 
-    mkdir -p ~/.local/npm-bin
-    cd ~/.local/npm-bin
-    npm init --yes
-    npm install \
-        pyright \
-        @angular/language-server \
-        dockerfile-language-server-nodejs \
-        typescript \
-        typescript-language-server \
-        vscode-langservers-extracted
 
-    mkdir -p ~/.local/omnisharp
-    cd ~/.local/omnisharp
-    wget "https://github.com/OmniSharp/omnisharp-roslyn/releases/latest/download/omnisharp-linux-x64.tar.gz"
-    tar -xzf "omnisharp-linux-x64.tar.gz"
+    # C#
+    if [ ! -d "$HOME/.local/omnisharp" ]; then
+        (
+            mkdir -p ~/.local/omnisharp
+            cd ~/.local/omnisharp
+            REPO="OmniSharp/omnisharp-roslyn"
+            LATEST_RELEASE="$(gh release -R $REPO list | grep 'Latest' | awk '{print $1}')"
+            FILE="omnisharp-linux-x64.tar.gz"
+            gh release -R $REPO download $LATEST_RELEASE --pattern "$FILE"
+            untar "$FILE"
+        )
+    fi
+
+
+    # Lua
+    if [ ! -d "$HOME/.local/lua-language-server" ]; then
+        (
+            mkdir -p ~/.local/lua-language-server
+            cd ~/.local/lua-language-server
+            REPO="sumneko/lua-language-server"
+            LATEST_RELEASE="$(gh release -R $REPO list | grep 'Latest' | awk '{print $1}')"
+            FILE="lua-language-server-$LATEST_RELEASE-linux-x64.tar.gz"
+            gh release -R $REPO download $LATEST_RELEASE --pattern "$FILE"
+            untar "$FILE"
+        )
+    fi
 }
 
 install-tmux-deps() {
@@ -171,3 +167,20 @@ install-zsh-plugins() {
 
 source ~/.zplugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
+if [ ! -d "$HOME/.asdf" ]; then
+    (
+        REPO="asdf-vm/asdf"
+        LATEST_RELEASE="$(gh release -R $REPO list | grep 'Latest' | awk '{print $1}')"
+        git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch "$LATEST_RELEASE"
+    )
+
+fi
+. $HOME/.asdf/asdf.sh
+
+# asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+# asdf plugin-add dotnet-core https://github.com/emersonsoares/asdf-dotnet-core.git
+# asdf plugin-add terraform https://github.com/asdf-community/asdf-hashicorp.git
+
+# asdf list all PLUGIN_NAME
+# aset install PLUGIN_NAME VERSION
+# aset global PLUGIN_NAME VERSION

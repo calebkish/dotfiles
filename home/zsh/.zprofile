@@ -8,26 +8,13 @@
 #     exec startx
 # fi
 
-
-# Disable less history file
-export LESSHISTFILE=-
-
-export EDITOR="nvim"
-export TERM="xterm-256color"
-
-export DOTNET_CLI_TELEMETRY_OPTOUT="1"
-
 if [ -z $WSL_INTEROP -a -z $WSLENV -a -z $WSL_DISTRO_NAME ]; then
+    # Make sure PATH environment variable is set for systemd services
     systemctl --user import-environment PATH
-    export JAVA_HOME="/usr/lib/jvm/default"
 else
     export SSL_CERT_DIR="/home/caleb/certificates/"
     export SSL_CERT_FILE="/home/caleb/certificates/ql-combined-certificate.crt"
     export NODE_EXTRA_CA_CERTS="$HOME/certificates/ql-combined-certificate.crt"
-fi
-
-if [ -z $WSL_INTEROP -a -z $WSLENV -a -z $WSL_DISTRO_NAME ]; then
-else
+    export DISPLAY="$(cat /etc/resolv.conf | grep 'nameserver' | awk '{print $2}'):0"
     wsl.exe -d wsl-vpnkit service wsl-vpnkit start 2>/dev/null
 fi
-
