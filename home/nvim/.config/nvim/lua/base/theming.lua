@@ -1,11 +1,11 @@
--- Turn off vim syntax highlighting
-vim.cmd('syntax off')
+-- Vim syntax highlighting
+vim.cmd('syntax on')
 
 -- Automatically set `filetype` option based on file extension.
 vim.cmd('filetype on')
 
 -- Loading plugin file based on filetype.
-vim.cmd('filetype plugin off')
+vim.cmd('filetype plugin on')
 
 -- Loading indent file based on filetype.
 vim.cmd('filetype indent on')
@@ -26,6 +26,8 @@ vim.g.gruvbox_baby_highlights = {
     ColorColumn = {     fg = "NONE",    bg = "#3c3836", style = "NONE" },
     EndOfBuffer = {     fg = "#665c54", bg = "NONE",    style = "NONE" },
     -- Visual = {          fg = "NONE",    bg = "#365468", style = "NONE" },
+    markdownCodeBlock = { fg = "NONE", bg = "NONE", style = "NONE" },
+
 }
 
 

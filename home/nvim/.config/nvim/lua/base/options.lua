@@ -70,7 +70,7 @@ vim.opt.hidden = true
 vim.opt.mouse = 'a'
 
 -- Show number on lines based on how far they are from current line, except...
-vim.opt.relativenumber = true
+vim.opt.relativenumber = false
 
 -- ...the current line will show the actual line number.
 vim.opt.number = true
@@ -82,7 +82,7 @@ vim.opt.backup = false
 vim.opt.undofile = true
 
 -- use vim configuration in current working directory.
-vim.opt.exrc = true
+vim.opt.exrc = false
 
 -- Insert only one space instead of two between lines when using `J`.
 vim.opt.joinspaces = false

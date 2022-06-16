@@ -20,13 +20,6 @@ augroup set_two_space_tabs
     autocmd Filetype html,css,scss,typescript,javascript,json setlocal tabstop=2
 augroup END
 
-augroup markdown_autocmd
-    autocmd!
-    autocmd Filetype markdown syntax off
-    autocmd Filetype markdown TSDisable highlight
-augroup END
-
-
 ]])
 
 vim.api.nvim_create_user_command('JSONFormat', function(args)
