@@ -37,8 +37,8 @@ URL_PATTERN="$ESCAPED_GH_ORIGIN\/$ALPHANUM_GROUP\/?$ALPHANUM_GROUP?\/?$ALPHANUM_
 
 ORG_NAME="$(echo "$URL" | sed -r -n "s|$URL_PATTERN|\1|p")"
 REPO_NAME="$(echo "$URL" | sed -r -n "s|$URL_PATTERN|\2|p")"
-TAB="$(echo "$URL" | sed -r -n "s|$URL_PATTERN|\3|p")"
-PR_NUM="$(echo "$URL" | sed -r -n "s|$URL_PATTERN|\4|p")"
+# TAB="$(echo "$URL" | sed -r -n "s|$URL_PATTERN|\3|p")"
+# PR_NUM="$(echo "$URL" | sed -r -n "s|$URL_PATTERN|\4|p")"
 
 if [ ! "$ORG_NAME" -o ! "$REPO_NAME" ]; then
     echo "ERROR: Provided URL is invalid or is missing organization and/or repo name in path. Exiting..."
@@ -70,43 +70,43 @@ if [ ! -d "$REPOS_DIR/$REPO_NAME" ]; then
     echo ""
 fi
 
-# Open the repo in VS code if TAB and PR_NUM are missing in URL path.
-if [ ! "$TAB" -o ! "$PR_NUM" ]; then
-    code "$REPOS_DIR/$REPO_NAME"
-    exit
-fi
+code "$REPOS_DIR/$REPO_NAME"
 
-echo "PR number: $PR_NUM"
+# # Open the repo in VS code if TAB and PR_NUM are missing in URL path.
+# if [ ! "$TAB" -o ! "$PR_NUM" ]; then
+#     code "$REPOS_DIR/$REPO_NAME"
+#     exit
+# fi
 
-(
-    cd "$REPOS_DIR/$REPO_NAME"
-
-    if [ -e "package-lock.json" ]; then
-        cat package-lock.json > /tmp/ph-old-package-lock.json
-        try_checkout || exit
-        cat package-lock.json > /tmp/ph-new-package-lock.json
-
-        echo ""
-        HAS_CHANGED="$(diff /tmp/ph-old-package-lock.json /tmp/ph-new-package-lock.json)"
-        echo ""
-
-        if [ "$HAS_CHANGED" ]; then
-            echo "package-lock.json was changed in PR ${PR_NUM}. Would you like to refresh node_modules?"
-            diff /tmp/ph-old-package-lock.json /tmp/ph-new-package-lock.json
-            SELECTED="$(echo "Yes\nNo" | fzf)"
-
-            if [ "$SELECTED" = "Yes" ]; then
-                npm install
-            elif [ "$SELECTED" = "No" ]; then
-                true
-            else
-                exit
-            fi
-        fi
-    else
-        try_checkout || exit
-    fi
-
-    code .
-)
-
+# (
+#     cd "$REPOS_DIR/$REPO_NAME"
+# 
+#     if [ -e "package-lock.json" ]; then
+#         cat package-lock.json > /tmp/ph-old-package-lock.json
+#         try_checkout || exit
+#         cat package-lock.json > /tmp/ph-new-package-lock.json
+# 
+#         echo ""
+#         HAS_CHANGED="$(diff /tmp/ph-old-package-lock.json /tmp/ph-new-package-lock.json)"
+#         echo ""
+# 
+#         if [ "$HAS_CHANGED" ]; then
+#             echo "package-lock.json was changed in PR ${PR_NUM}. Would you like to refresh node_modules?"
+#             diff /tmp/ph-old-package-lock.json /tmp/ph-new-package-lock.json
+#             SELECTED="$(echo "Yes\nNo" | fzf)"
+# 
+#             if [ "$SELECTED" = "Yes" ]; then
+#                 npm install
+#             elif [ "$SELECTED" = "No" ]; then
+#                 true
+#             else
+#                 exit
+#             fi
+#         fi
+#     else
+#         try_checkout || exit
+#     fi
+# 
+#     code .
+# )
+# 
