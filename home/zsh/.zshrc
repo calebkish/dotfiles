@@ -178,11 +178,9 @@ fi
 . $HOME/.asdf/asdf.sh
 
 # asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
-# asdf list all nodejs
-# asdf install nodejs lts
-# asdf global nodejs lts
-
 # asdf plugin-add dotnet-core https://github.com/emersonsoares/asdf-dotnet-core.git
-# asdf list all dotnet-core
-# aset install dotnet-core *
-# aset global dotnet-core *
+# asdf plugin-add terraform https://github.com/asdf-community/asdf-hashicorp.git
+
+# asdf list all PLUGIN_NAME
+# aset install PLUGIN_NAME VERSION
+# aset global PLUGIN_NAME VERSION
