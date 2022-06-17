@@ -66,8 +66,8 @@ bindkey -s '^o' 'lfcd\n'
 bindkey -s '^f' 'cd "$(dirname "$(fzf)")"\n'
 
 # Edit line in vim with ctrl-e:
-autoload edit-command-line; zle -N edit-command-line
-bindkey '^e' edit-command-line
+# autoload edit-command-line; zle -N edit-command-line
+# bindkey '^e' edit-command-line
 
 alias ls='ls -hN --color=always --group-directories-first'
 alias cp='cp -iv'
@@ -105,49 +105,64 @@ gcb() {
 
 
 install-nvim-deps() {
+    if [ ! -d "$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim" ]; then
+        git clone --depth 1 https://github.com/wbthomason/packer.nvim \
+            ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+    fi
+
     # Python, HTML, CSS, JS, TS, JSON, Docker
-    (
-        mkdir -p ~/.local/npm-bin
-        cd ~/.local/npm-bin
-        npm install \
-            pyright \
-            dockerfile-language-server-nodejs \
-            typescript-language-server \
-            vscode-langservers-extracted
-    )
-
-
-    # C#
-    if [ ! -d "$HOME/.local/omnisharp" ]; then
+    if [ ! -d "$HOME/.local/npm-bin" ]; then
         (
-            mkdir -p ~/.local/omnisharp
-            cd ~/.local/omnisharp
-            REPO="OmniSharp/omnisharp-roslyn"
-            LATEST_RELEASE="$(gh release -R $REPO list | grep 'Latest' | awk '{print $1}')"
-            FILE="omnisharp-linux-x64.tar.gz"
-            gh release -R $REPO download $LATEST_RELEASE --pattern "$FILE"
-            untar "$FILE"
+            mkdir -p ~/.local/npm-bin
+            cd ~/.local/npm-bin &&
+            npm install \
+                pyright \
+                dockerfile-language-server-nodejs \
+                typescript-language-server \
+                vscode-langservers-extracted
         )
     fi
 
+    # C#
+    if [ ! -e "$HOME/.local/omnisharp/run" ]; then
+        (
+            rm -r ~/.local/omnisharp 2>/dev/null
+            mkdir -p ~/.local/omnisharp 2>/dev/null
+            REPO="https://github.com/OmniSharp/omnisharp-roslyn.git"
+            LATEST=$(git -c 'versionsort.suffix=-' \
+                ls-remote --exit-code --refs --sort='version:refname' --tags $REPO '*.*.*' \
+                | tail --lines=1 \
+                | cut --delimiter='/' --fields=3)
+            FILE="omnisharp-linux-x64.tar.gz"
+            cd ~/.local/omnisharp &&
+            wget "https://github.com/Omnisharp/omnisharp-roslyn/releases/download/$LATEST/$FILE" 1>/dev/null &&
+            untar "$FILE" 1>/dev/null
+        )
+    fi
 
     # Lua
-    if [ ! -d "$HOME/.local/lua-language-server" ]; then
+    if [ ! -e "$HOME/.local/lua-language-server/bin/lua-language-server" ]; then
         (
-            mkdir -p ~/.local/lua-language-server
-            cd ~/.local/lua-language-server
-            REPO="sumneko/lua-language-server"
-            LATEST_RELEASE="$(gh release -R $REPO list | grep 'Latest' | awk '{print $1}')"
-            FILE="lua-language-server-$LATEST_RELEASE-linux-x64.tar.gz"
-            gh release -R $REPO download $LATEST_RELEASE --pattern "$FILE"
-            untar "$FILE"
+            rm -r ~/.local/lua-language-server 2>/dev/null
+            mkdir -p ~/.local/lua-language-server 2>/dev/null
+            REPO="https://github.com/sumneko/lua-language-server.git"
+            LATEST=$(git -c 'versionsort.suffix=-' \
+                ls-remote --exit-code --refs --sort='version:refname' --tags $REPO '*.*.*' \
+                | tail --lines=1 \
+                | cut --delimiter='/' --fields=3)
+            FILE="lua-language-server-$LATEST-linux-x64.tar.gz"
+            cd ~/.local/lua-language-server &&
+            wget "https://github.com/sumneko/lua-language-server/releases/download/$LATEST/$FILE" 1>/dev/null &&
+            untar "$FILE" 1>/dev/null
         )
     fi
 }
 
 install-tmux-deps() {
-    mkdir -p ~/.tmux/plugins/tpm
-    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+        mkdir -p ~/.tmux/plugins/tpm
+        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    fi
 }
 
 install-zsh-plugins() {
@@ -169,16 +184,18 @@ source ~/.zplugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
 if [ ! -d "$HOME/.asdf" ]; then
     (
-        REPO="asdf-vm/asdf"
-        LATEST_RELEASE="$(gh release -R $REPO list | grep 'Latest' | awk '{print $1}')"
-        git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch "$LATEST_RELEASE"
+        REPO="https://github.com/asdf-vm/asdf.git"
+        LATEST=$(git -c 'versionsort.suffix=-' \
+            ls-remote --exit-code --refs --sort='version:refname' --tags $REPO '*.*.*' \
+            | tail --lines=1 \
+            | cut --delimiter='/' --fields=3)
+        git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch "$LATEST"
     )
 
 fi
 . $HOME/.asdf/asdf.sh
 
 # asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
-# asdf plugin-add dotnet-core https://github.com/emersonsoares/asdf-dotnet-core.git
 # asdf plugin-add terraform https://github.com/asdf-community/asdf-hashicorp.git
 
 # asdf list all PLUGIN_NAME
