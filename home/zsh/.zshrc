@@ -187,8 +187,8 @@ if [ ! -d "$HOME/.asdf" ]; then
         REPO="https://github.com/asdf-vm/asdf.git"
         LATEST=$(git -c 'versionsort.suffix=-' \
             ls-remote --exit-code --refs --sort='version:refname' --tags $REPO '*.*.*' \
-            | tail --lines=1 \
-            | cut --delimiter='/' --fields=3)
+                | tail --lines=1 \
+                | cut --delimiter='/' --fields=3)
         git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch "$LATEST"
     )
 
