@@ -11,14 +11,14 @@ require('packer').startup(function(use)
     use('JoosepAlviste/nvim-ts-context-commentstring')
 
     use('neovim/nvim-lspconfig')
-    use('kyazdani42/nvim-web-devicons')
-    use({
-        'folke/trouble.nvim',
-        requires = 'kyazdani42/nvim-web-devicons',
-        config = function()
-            require('trouble').setup()
-        end
-    })
+    -- use('kyazdani42/nvim-web-devicons')
+    -- use({
+    --     'folke/trouble.nvim',
+    --     requires = 'kyazdani42/nvim-web-devicons',
+    --     config = function()
+    --         require('trouble').setup()
+    --     end
+    -- })
 
     use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' })
     use('nvim-treesitter/playground')
@@ -47,23 +47,23 @@ require('packer').startup(function(use)
 
     use('lewis6991/impatient.nvim')
 
-    use('jose-elias-alvarez/null-ls.nvim')
+    -- use('jose-elias-alvarez/null-ls.nvim')
 
-    use('ldelossa/litee.nvim')
-    use('ldelossa/litee-filetree.nvim')
+    -- use('ldelossa/litee.nvim')
+    -- use('ldelossa/litee-filetree.nvim')
 end)
 
-require('litee.lib').setup({
-    tree = {
-        icon_set = "codicons"
-    },
-    panel = {
-        orientation = "right",
-        panel_size  = 30
-    }
-})
+-- require('litee.lib').setup({
+--     tree = {
+--         icon_set = "codicons"
+--     },
+--     panel = {
+--         orientation = "right",
+--         panel_size  = 30
+--     }
+-- })
 
-require('litee.filetree').setup()
+-- require('litee.filetree').setup()
 
 
 

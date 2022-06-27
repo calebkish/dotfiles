@@ -16,20 +16,19 @@ vim.opt.termguicolors = true
 vim.g.gruvbox_baby_transparent_mode = false
 vim.g.gruvbox_baby_telescope_theme = false
 vim.g.gruvbox_baby_highlights = {
-    Search = {          fg = "NONE",    bg = "#6d442b", style = "NONE" },
-    IncSearch = {       fg = "NONE",    bg = "#6D2B5E", style = "underline" },
-    LineNr = {          fg = "#928375", bg = "NONE",    style = "NONE" },
-    MatchParen = {      fg = "#dedede", bg = "#665c54", style = "NONE"},
-    Comment = {         fg = "#928375", bg = "NONE",    style = "italic" },
-    TSComment = {       fg = "#928375", bg = "NONE",    style = "italic" },
-    SpecialComment = {  fg = "#928375", bg = "NONE",    style = "NONE" },
-    ColorColumn = {     fg = "NONE",    bg = "#3c3836", style = "NONE" },
-    EndOfBuffer = {     fg = "#665c54", bg = "NONE",    style = "NONE" },
-    -- Visual = {          fg = "NONE",    bg = "#365468", style = "NONE" },
-    markdownCodeBlock = { fg = "NONE", bg = "NONE", style = "NONE" },
-
+    Search = {              fg = 'NONE',    bg = '#6d442b', style = 'NONE' },
+    IncSearch = {           fg = 'NONE',    bg = '#6D2B5E', style = 'underline' },
+    LineNr = {              fg = '#928375', bg = 'NONE',    style = 'NONE' },
+    MatchParen = {          fg = '#dedede', bg = '#665c54', style = 'NONE'},
+    Comment = {             fg = '#928375', bg = 'NONE',    style = 'italic' },
+    TSComment = {           fg = '#928375', bg = 'NONE',    style = 'italic' },
+    SpecialComment = {      fg = '#928375', bg = 'NONE',    style = 'NONE' },
+    ColorColumn = {         fg = 'NONE',    bg = '#3c3836', style = 'NONE' },
+    EndOfBuffer = {         fg = '#665c54', bg = 'NONE',    style = 'NONE' },
+    Visual = {              fg = 'NONE',    bg = '#365468', style = 'NONE' },
+    markdownCodeBlock = {   fg = 'NONE',    bg = 'NONE',    style = 'NONE' },
+    htmlEndTag = {          fg = '#87AF87', bg = 'NONE',    style = 'NONE' },
 }
-
 
 local colorscheme = 'gruvbox-baby'
 local status_ok, _ = pcall(vim.cmd, 'colorscheme ' .. colorscheme)

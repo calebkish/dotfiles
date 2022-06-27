@@ -4,19 +4,20 @@ function! OpenTerminal()
     split term://zsh
     resize 10
 endfunction
+
 nnoremap <silent><leader>t :call OpenTerminal()<CR>
 
-function! TerminalOptions()
-    augroup terminal_opts
-        autocmd!
-        autocmd BufEnter <buffer> silent! exec "normal! i"
-    augroup
-endfunction
+" function! TerminalOptions()
+"     augroup terminal_opts
+"         autocmd!
+"         autocmd BufEnter <buffer> silent! exec "normal! i"
+"     augroup
+" endfunction
 
-augroup terminal_open
-    autocmd!
-    autocmd TermOpen * call TerminalOptions()
-augroup
+" augroup terminal_open
+"     autocmd!
+"     autocmd TermOpen * call TerminalOptions()
+" augroup
 
 " Exit out of terminal.
 tnoremap <C-q> <C-\><C-n>:q!<CR>

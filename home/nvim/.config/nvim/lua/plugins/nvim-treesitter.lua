@@ -3,7 +3,7 @@ require'nvim-treesitter.configs'.setup {
     ignore_install = {'fusion', 'jsonc'}, -- List of parsers to ignore installing
     highlight = {
         enable = true, -- false will disable the whole extension
-        disable = {'markdown', 'help'}, -- list of languages that will be disabled
+        disable = {'markdown', 'help', 'html'}, -- list of languages that will be disabled
         additional_vim_regex_highlighting = false,
         -- use_languagetree = true,
     },
