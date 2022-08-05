@@ -12,9 +12,12 @@ if [ -z $WSL_INTEROP -a -z $WSLENV -a -z $WSL_DISTRO_NAME ]; then
     # Make sure PATH environment variable is set for systemd services
     systemctl --user import-environment PATH
 else
-    export SSL_CERT_DIR="/home/caleb/certificates/"
-    export SSL_CERT_FILE="/home/caleb/certificates/ql-combined-certificate.crt"
-    export NODE_EXTRA_CA_CERTS="$HOME/certificates/ql-combined-certificate.crt"
+    export AWS_CA_BUNDLE="$HOME/certificates/ql-combined-certificate.pem"
+    export NODE_EXTRA_CA_CERTS="$HOME/certificates/ql-combined-certificate.pem"
+    export SSL_CERT_DIR="$HOME/certificates/"
+    export SSL_CERT_FILE="$HOME/certificates/ql-combined-certificate.crt"
+
     export DISPLAY="$(cat /etc/resolv.conf | grep 'nameserver' | awk '{print $2}'):0"
     wsl.exe -d wsl-vpnkit service wsl-vpnkit start 2>/dev/null
 fi
+
