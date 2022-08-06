@@ -105,6 +105,27 @@ gcb() {
     git clone $repo --bare "$plug_dir_name/.git"
 }
 
+remove_from_path() {
+    path_fragment="$1"
+    path_fragment_index=${path[(i)$path_fragment]}
+    path[$path_fragment_index]=()
+}
+
+NVM_DIR="$HOME/.nvm"
+load_nvm() {
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+}
+
+DEFAULT_NODE_VERSION="v16.14.2"
+NVM_BIN="$NVM_DIR/versions/node/$DEFAULT_NODE_VERSION/bin"
+PATH="$NVM_BIN:$PATH"
+alias nvm="
+echo 'Please wait while nvm loads'
+remove_from_path $NVM_BIN
+unset NVM_BIN
+unalias nvm
+load_nvm
+nvm $@"
 
 install-nvim-deps() {
     if [ ! -d "$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim" ]; then
