@@ -75,6 +75,7 @@ alias mv='mv -iv'
 alias mkdir='mkdir -p'
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
+alias bc="bc -l"
 
 alias ll='ls -al'
 alias untar='tar -zxvf'
@@ -85,6 +86,7 @@ alias ce="python3 -m venv venv"
 alias ie="pip install --upgrade pip ; pip3 install -r requirements.txt"
 
 alias ng="npm run ng"
+
 
 PROMPT='%B%1~%f %#%b '
 

@@ -75,6 +75,7 @@ lib.map('', '<C-l>', ':wincmd l<CR>')
 
 lib.map('n', '<Leader>h', '<Cmd>so $VIMRUNTIME/syntax/hitest.vim<CR>')
 
+-- Get the highlight group under the cursor
 vim.cmd([[
 nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"

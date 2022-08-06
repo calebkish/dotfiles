@@ -11,14 +11,7 @@ require('packer').startup(function(use)
     use('JoosepAlviste/nvim-ts-context-commentstring')
 
     use('neovim/nvim-lspconfig')
-    -- use('kyazdani42/nvim-web-devicons')
-    -- use({
-    --     'folke/trouble.nvim',
-    --     requires = 'kyazdani42/nvim-web-devicons',
-    --     config = function()
-    --         require('trouble').setup()
-    --     end
-    -- })
+    use('kyazdani42/nvim-web-devicons')
 
     use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' })
     use('nvim-treesitter/playground')
@@ -49,22 +42,101 @@ require('packer').startup(function(use)
 
     -- use('jose-elias-alvarez/null-ls.nvim')
 
-    -- use('ldelossa/litee.nvim')
-    -- use('ldelossa/litee-filetree.nvim')
+    use({
+        'kyazdani42/nvim-tree.lua',
+        requires = { 'kyazdani42/nvim-web-devicons' },
+    })
+
+    use('akinsho/bufferline.nvim')
 end)
 
--- require('litee.lib').setup({
---     tree = {
---         icon_set = "codicons"
---     },
---     panel = {
---         orientation = "right",
---         panel_size  = 30
---     }
--- })
+local my_lib = require('lib.lib')
 
--- require('litee.filetree').setup()
+my_lib.map('n', '<Leader>s', ':BufferLinePick<CR>')
+my_lib.map('n', '<Leader>S', ':BufferLinePickClose<CR>')
 
+
+local lib = require('nvim-tree.lib')
+local view = require('nvim-tree.view')
+
+local function collapse_all()
+    require('nvim-tree.actions.tree-modifiers.collapse-all').fn()
+end
+
+local function edit_or_open()
+    -- open as vsplit on current node
+    local action = 'edit'
+    local node = lib.get_node_at_cursor()
+
+    -- Just copy what's done normally with vsplit
+    if node.link_to and not node.nodes then
+        require('nvim-tree.actions.node.open-file').fn(action, node.link_to)
+        view.close() -- Close the tree if file was opened
+
+    elseif node.nodes ~= nil then
+        lib.expand_or_collapse(node)
+
+    else
+        require('nvim-tree.actions.node.open-file').fn(action, node.absolute_path)
+        view.close() -- Close the tree if file was opened
+    end
+
+end
+
+local function vsplit_preview()
+    -- open as vsplit on current node
+    local action = 'vsplit'
+    local node = lib.get_node_at_cursor()
+
+    -- Just copy what's done normally with vsplit
+    if node.link_to and not node.nodes then
+        require('nvim-tree.actions.node.open-file').fn(action, node.link_to)
+
+    elseif node.nodes ~= nil then
+        lib.expand_or_collapse(node)
+
+    else
+        require('nvim-tree.actions.node.open-file').fn(action, node.absolute_path)
+
+    end
+
+    -- Finally refocus on tree if it was lost
+    view.focus()
+end
+
+require('nvim-tree').setup({
+    open_on_setup_file = false,
+    hijack_cursor = false,
+    view = {
+        side = 'right',
+        width = 35,
+        mappings = {
+            list = {
+                { key = 'l', action = 'edit', action_cb = edit_or_open },
+                { key = 'L', action = 'vsplit_preview', action_cb = vsplit_preview },
+                { key = 'h', action = 'close_node' },
+                { key = 'H', action = 'collapse_all', action_cb = collapse_all }
+            }
+        }
+    },
+    renderer = {
+        highlight_git = false,
+        highlight_opened_files = 'all', -- fix
+        icons = {
+            git_placement = 'before',
+        },
+        symlink_destination = false,
+    },
+    update_focused_file = {
+        enable = true, -- a keybind to go to the focused file would be better
+    },
+    diagnostics = {
+        enable = true,
+        show_on_dirs = true,
+    },
+})
+
+my_lib.map('n', '<Localleader>e', ':NvimTreeToggle<CR>')
 
 
 -- null-ls
@@ -75,14 +147,3 @@ end)
 --         null_ls.builtins.diagnostics.teal
 --     }
 -- })
-
-
--- Trouble.nvim
--- vim.cmd([[
--- nnoremap <Leader>xx <cmd>TroubleToggle<CR>
--- nnoremap <Leader>xw <cmd>TroubleToggle workspace_diagnostics<CR>
--- nnoremap <Leader>xd <cmd>TroubleToggle document_diagnostics<CR>
--- nnoremap <Leader>xq <cmd>TroubleToggle quickfix<CR>
--- nnoremap <Leader>xl <cmd>TroubleToggle loclist<CR>
--- nnoremap gR <Cmd>TroubleToggle lsp_references<CR>
--- ]])

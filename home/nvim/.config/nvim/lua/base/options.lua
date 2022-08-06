@@ -122,8 +122,5 @@ vim.opt.splitbelow = true
 
 vim.opt.splitright = true
 
--- :lua =vim.api.nvim_get_option('cpoptions')
--- :lua =vim.opt.cpoptions:get()
--- vim.opt.cpoptions:remove('a')
-
+-- Pop Up Menu height
 vim.opt.pumheight = 10
