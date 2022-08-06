@@ -116,7 +116,7 @@ load_nvm() {
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 }
 
-DEFAULT_NODE_VERSION="v16.14.2"
+DEFAULT_NODE_VERSION="v16.16.0"
 NVM_BIN="$NVM_DIR/versions/node/$DEFAULT_NODE_VERSION/bin"
 PATH="$NVM_BIN:$PATH"
 alias nvm="
@@ -205,18 +205,18 @@ install-zsh-plugins() {
 
 source ~/.zplugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
-if [ ! -d "$HOME/.asdf" ]; then
-    (
-        REPO="https://github.com/asdf-vm/asdf.git"
-        LATEST=$(git -c 'versionsort.suffix=-' \
-            ls-remote --exit-code --refs --sort='version:refname' --tags $REPO '*.*.*' \
-                | tail --lines=1 \
-                | cut --delimiter='/' --fields=3)
-        git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch "$LATEST"
-    )
-
-fi
-. $HOME/.asdf/asdf.sh
+# if [ ! -d "$HOME/.asdf" ]; then
+#     (
+#         REPO="https://github.com/asdf-vm/asdf.git"
+#         LATEST=$(git -c 'versionsort.suffix=-' \
+#             ls-remote --exit-code --refs --sort='version:refname' --tags $REPO '*.*.*' \
+#                 | tail --lines=1 \
+#                 | cut --delimiter='/' --fields=3)
+#         git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch "$LATEST"
+#     )
+#
+# fi
+# . $HOME/.asdf/asdf.sh
 
 # asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
 # asdf plugin-add terraform https://github.com/asdf-community/asdf-hashicorp.git
