@@ -2,7 +2,7 @@ local UI = require('pepita.ui')
 
 local M = {}
 
-M.setup = function()
+function M.setup()
     if vim.g.loaded_pepita == 1 then return end
     local user_cpoptions = vim.opt.cpoptions:get() -- save current cpoptions
     vim.cmd('set cpoptions&vim') -- reset to vim default cpoptions

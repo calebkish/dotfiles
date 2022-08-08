@@ -41,15 +41,15 @@ end
 local M = {}
 
 ---@param project_path string
-M.get_project = function(project_path)
+function M.get_project(project_path)
     local projs = get_projects()
     return projs[project_path]
 end
 
----@param project_path string
+---@param project_path string | nil
 ---@param file_to_add string
 ---@return table<string, string> of new recent files and their mappings
-M.add_recent_file = function(project_path, file_to_add)
+function M.add_recent_file(project_path, file_to_add)
     if not vim.startswith(file_to_add, project_path) then
         error('The file ' .. file_to_add .. ' is not in project folder ' .. project_path)
     end
@@ -59,8 +59,11 @@ M.add_recent_file = function(project_path, file_to_add)
     end
 
     local projs = get_projects()
+
     if projs[project_path] == nil then
-        error('Could not find project for path ' .. project_path)
+        M.add_project()
+        projs = get_projects()
+        -- error('Could not find project for path ' .. project_path)
     end
 
     if projs[project_path].recent == nil then
@@ -103,7 +106,7 @@ end
 ---@param project_path string
 ---@param file_to_remove string
 ---@return table<string, string> of filtered recent files and their mappings
-M.remove_recent_file = function(project_path, file_to_remove)
+function M.remove_recent_file(project_path, file_to_remove)
     if not vim.startswith(file_to_remove, project_path) then
         error('The file ' .. file_to_remove .. ' is not in project folder ' .. project_path)
     end
@@ -135,21 +138,56 @@ M.remove_recent_file = function(project_path, file_to_remove)
     return projs[project_path].recent
 end
 
+function M.remove_file_at_index(project_path, index)
+    local projs = get_projects()
+    if projs[project_path] == nil then
+        error('Could not find project for path ' .. project_path)
+    end
 
-M.setup_global_autocmds = function()
-    local group = vim.api.nvim_create_augroup("PepitaGroup", { clear = true })
-    vim.api.nvim_create_autocmd("BufEnter", { callback = function()
+    if projs[project_path].recent == nil then
+        projs[project_path].recent = {}
+        return projs[project_path].recent
+    end
 
-    end, group = group })
+    local file_at_index = projs[project_path].recent[index].file_path
+
+    if file_at_index == nil then
+        error('Could not find file at index' .. index)
+    end
+
+    return M.remove_recent_file(project_path, file_at_index)
 end
 
 
-M.add_project = function()
+-- function M.setup_global_autocmds()
+--     local group = vim.api.nvim_create_augroup("PepitaGroup", { clear = true })
+--     vim.api.nvim_create_autocmd("BufEnter", { callback = function()
+--
+--     end, group = group })
+-- end
+
+
+function M.add_project()
     if not U.file_exists(PROJ_FILE_PATH) then
         Job:new({ command = 'mkdir', args = { '-p', PROJ_FILE_PATH } })
         set_projects({})
     end
 
+    local path = M.get_current_path()
+
+    local projs = get_projects()
+
+    if projs[path] then
+        error('Project already has an entry')
+    end
+
+    projs[path] = {
+        recent = {},
+    }
+    set_projects(projs)
+end
+
+function M.get_current_path()
     local out, err = '', ''
     Job:new({
         command = 'git',
@@ -170,24 +208,10 @@ M.add_project = function()
         path = out
     end
 
-    local projs = get_projects()
-
-    if projs[path] then
-        error('Project already has an entry')
-    end
-
-    projs[path] = {
-        recent = {},
-    }
-    set_projects(projs)
+    return path
 end
 
-
-
-
--- local path = vim.loop.cwd()
---
--- local thing = M.add_recent_file(path, '/home/caleb/.config/nvim/lua/base/options.lua')
+-- local thing = M.add_recent_file('/home/caleb/.config/nvim/lua/base/options.lua')
 -- P(thing)
 
 -- local thing2 = M.remove_recent_file(path, '/home/caleb/.config/nvim/lua/base/options.lua')

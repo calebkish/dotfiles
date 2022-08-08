@@ -205,6 +205,11 @@ install-zsh-plugins() {
 
 source ~/.zplugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
+if [ ! -d "$HOME/.nvm" ]; then
+    (
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+    )
+fi
 # if [ ! -d "$HOME/.asdf" ]; then
 #     (
 #         REPO="https://github.com/asdf-vm/asdf.git"

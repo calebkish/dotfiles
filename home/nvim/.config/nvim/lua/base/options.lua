@@ -34,8 +34,8 @@ vim.opt.shiftround = true
 
 vim.opt.encoding = 'utf-8'
 
--- Always keep the cursor centered.
-vim.opt.scrolloff = 1000
+-- Space between edge of editor and cursor
+vim.opt.scrolloff = 5
 
 vim.opt.hlsearch = true
 

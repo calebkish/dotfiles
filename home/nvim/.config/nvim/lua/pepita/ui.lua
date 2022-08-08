@@ -85,7 +85,7 @@ local function redraw_explorer()
     vim.api.nvim_buf_set_option(ex_buf, 'modifiable', false)
 end
 
-UI.open_file = function()
+function UI.open_file()
     -- we get path from line which user pushes enter on
     local path = vim.api.nvim_get_current_line()
 
@@ -103,21 +103,21 @@ UI.open_file = function()
     end
 end
 
-UI.close_explorer = function()
+function UI.close_explorer()
     if ex_win and vim.api.nvim_win_is_valid(ex_win) then
         vim.api.nvim_win_close(ex_win, true)
         ex_win = nil
     end
 end
 
-UI.preview_file = function()
+function UI.preview_file()
     UI.open_file() -- we open new file
     -- but in preview instead of closing navigation
     -- we focus back to it
     vim.api.nvim_set_current_win(ex_win)
 end
 
-UI.open_file_split = function(axis)
+function UI.open_file_split(axis)
     local path = vim.api.nvim_get_current_line()
 
     -- We still need to handle scenarios
@@ -136,14 +136,14 @@ UI.open_file_split = function(axis)
     UI.close_explorer()
 end
 
-UI.open_file_in_tab = function()
+function UI.open_file_in_tab()
     local path = vim.api.nvim_get_current_line()
 
     vim.api.nvim_command('tabnew ' .. path)
     UI.close_explorer()
 end
 
-UI.open_explorer = function()
+function UI.open_explorer()
     local path = vim.loop.cwd()
 
     local proj = S.get_project(path)
@@ -174,6 +174,5 @@ end
 
 local opts = { nowait = true, noremap = true, silent = true, buffer = true }
 vim.keymap.set('n', '<localleader>l', function() UI.open_explorer() end, opts)
-
 
 return UI

@@ -3,7 +3,7 @@ local U = {}
 ---@param table table
 ---@param filter_iter function
 ---@return table
-U.tbl_filter = function(table, filter_iter)
+function U.tbl_filter(table, filter_iter)
   local out = {}
 
   for k, v in pairs(table) do
@@ -17,7 +17,7 @@ end
 ---@param list T[]
 ---@param list_iter fun(list_val: T, list: T[]): boolean
 ---@return T[]
-U.list_filter = function(list, list_iter)
+function U.list_filter(list, list_iter)
     local out = {}
 
     for _, v in ipairs(list) do
@@ -27,7 +27,7 @@ U.list_filter = function(list, list_iter)
     return out
 end
 
-U.list_has_value = function(list, value)
+function U.list_has_value(list, value)
     local filtered = U.list_filter(list, function(list_value)
         return list_value == value
     end)
@@ -36,7 +36,7 @@ end
 
 ---@param t table
 ---@return number
-U.tbl_length = function(t)
+function U.tbl_length(t)
     local count = 0
     for _, _ in pairs(t) do
         count = count + 1
@@ -46,7 +46,7 @@ end
 
 ---@param file string
 ---@returns boolean
-U.file_exists = function(file)
+function U.file_exists(file)
     local file_handle = io.open(file, 'r')
     if file_handle ~= nil then
         file_handle:close()
@@ -58,11 +58,14 @@ end
 ---@param text string
 ---@param overwrite boolean
 ---@return boolean Whether file was successfully written to
-U.write_file = function(file, text, overwrite)
+function U.write_file(file, text, overwrite)
     if U.file_exists(file) and not overwrite then
         return false
     end
     local file_handle = io.open(file, 'w')
+    if file_handle == nil then
+        return false
+    end
     file_handle:write(text)
     file_handle:close()
     return true
@@ -70,11 +73,14 @@ end
 
 ---@param file string
 ---@return string
-U.read_file = function(file)
+function U.read_file(file)
     if not U.file_exists(file) then
         error('File doesn\'t exist')
     end
     local file_handle = io.open(file, 'r')
+    if file_handle == nil then
+        return false
+    end
     local t = file_handle:read('*a')
     file_handle:close()
     return t
@@ -85,7 +91,7 @@ end
 ---@param a T[]
 ---@param b T[]
 ---@returns T[]
-U.set_subtract = function(a, b)
+function U.set_subtract(a, b)
     local c = {}
 
     for _, v in ipairs(a) do

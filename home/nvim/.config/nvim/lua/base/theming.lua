@@ -40,6 +40,8 @@ end
 vim.api.nvim_set_hl(0, 'Normal', { bg = 'NONE', ctermbg = 'NONE' })
 vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'NONE', ctermbg = 'NONE' })
 
+vim.api.nvim_set_hl(0, 'ScrollbarSearch', { bg = 'NONE', fg = '#8ec07c' })
+vim.api.nvim_set_hl(0, 'ScrollbarSearchHandle', { bg = '#32302F', fg = '#8ec07c' })
 
 -- Highlight after yank
 vim.api.nvim_set_hl(0, 'HighlightYank', { fg = 'NONE', bg = '#414F54' })
