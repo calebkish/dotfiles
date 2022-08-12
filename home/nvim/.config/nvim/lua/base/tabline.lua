@@ -16,10 +16,17 @@ function _G.get_tab_line()
 
     local proj = pepita.get_project(pepita.get_current_path()) or { recent = {} }
 
+    local tabPagesAmount = vim.fn.tabpagenr('$')
+
+    if #proj.recent == 0 and tabPagesAmount == 1 then
+        vim.opt.showtabline = 1
+        return
+    end
+
     local curr_file_path = vim.fn.expand('%')
     local curr_file_path_tokens = vim.fn.split(curr_file_path, '/')
     local curr_file_name = curr_file_path_tokens[#curr_file_path_tokens]
-    for _, file in ipairs(proj.recent) do
+    for index, file in ipairs(proj.recent) do
         local filePathTokens = vim.fn.split(file.file_path, '/')
         local name = filePathTokens[#filePathTokens]
         if name == curr_file_name then
@@ -27,12 +34,11 @@ function _G.get_tab_line()
         else
             s = s .. '%#TabLine#'
         end
-        s = s .. ' ' .. name .. ' '
+        s = s .. index .. ' ' .. name .. ' '
     end
 
     s = s .. '%#TabLineFill#'
 
-    local tabPagesAmount = vim.fn.tabpagenr('$')
     local currentTabPageNumber = vim.fn.tabpagenr()
     if tabPagesAmount > 1 then
         s = s .. '%=%999('
@@ -65,38 +71,21 @@ function _G.get_tab_line()
     return s
 end
 
+vim.api.nvim_set_hl(0, 'TabLineSel', { bg = '#454545', fg = '#FFD7AF' })
 
 vim.opt.showtabline = 2
 
 vim.cmd('set tabline=%!v:lua.get_tab_line()')
 
--- lib.map('n', '<Leader>a', function()
---     local proj_path = pepita.get_current_path()
---     local file = vim.api.nvim_buf_get_name(0)
---     P(file)
---     pepita.add_recent_file(proj_path, file)
---     vim.cmd('redrawtabline')
--- end)
 lib.map('n', '<Leader>a', '<Nop>', { callback = function()
+    vim.opt.showtabline = 2
     local proj_path = pepita.get_current_path()
     local file = vim.api.nvim_buf_get_name(0)
-    P(file)
     pepita.add_recent_file(proj_path, file)
     vim.cmd('redrawtabline')
 end })
 
--- lib.map('n', '<Leader>d', function()
---     local count = vim.v.count
---     local proj_path = pepita.get_current_path()
---     if count == 0 then
---         local file = vim.api.nvim_buf_get_name(0)
---         pepita.remove_recent_file(proj_path, file)
---     else
---         pepita.remove_file_at_index(proj_path, count)
---     end
---     vim.cmd('redrawtabline')
--- end)
-lib.map('n', '<Leader>d', '<Nop>', { callback = function()
+lib.map('n', '<Leader>rf', '<Nop>', { callback = function()
     local count = vim.v.count
     local proj_path = pepita.get_current_path()
     if count == 0 then
@@ -107,3 +96,29 @@ lib.map('n', '<Leader>d', '<Nop>', { callback = function()
     end
     vim.cmd('redrawtabline')
 end })
+
+
+local function go_to_bookmark(num)
+    local state = pepita.get_project(pepita.get_current_path())
+    local file = state.recent[num]
+
+    if file == nil then
+        return
+    end
+
+    local curr_file = vim.api.nvim_buf_get_name(0)
+
+    if file.file_path ~= curr_file then
+        vim.cmd('edit ' .. file.file_path)
+    end
+end
+
+lib.map('n', '<Leader>1', '<Nop>', { callback = function() go_to_bookmark(1) end })
+lib.map('n', '<Leader>2', '<Nop>', { callback = function() go_to_bookmark(2) end })
+lib.map('n', '<Leader>3', '<Nop>', { callback = function() go_to_bookmark(3) end })
+lib.map('n', '<Leader>4', '<Nop>', { callback = function() go_to_bookmark(4) end })
+lib.map('n', '<Leader>5', '<Nop>', { callback = function() go_to_bookmark(5) end })
+lib.map('n', '<Leader>6', '<Nop>', { callback = function() go_to_bookmark(6) end })
+lib.map('n', '<Leader>7', '<Nop>', { callback = function() go_to_bookmark(7) end })
+lib.map('n', '<Leader>8', '<Nop>', { callback = function() go_to_bookmark(8) end })
+lib.map('n', '<Leader>9', '<Nop>', { callback = function() go_to_bookmark(9) end })
