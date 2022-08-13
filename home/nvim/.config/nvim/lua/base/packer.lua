@@ -59,14 +59,16 @@ require('packer').startup(function(use)
             'Time', -- measure how long it takes to run some stuff.
         },
     })
+
+    use('voldikss/vim-floaterm')
 end)
 
 require('scrollbar').setup()
 require("scrollbar.handlers.search").setup()
 
-vim.cmd([[
-hi default link HlSearchLens Search
-]])
+-- used for nvm-hlslens plugin
+vim.cmd('hi default link HlSearchLens Search')
+
 
 -- null-ls
 -- local null_ls = require('null-ls')
