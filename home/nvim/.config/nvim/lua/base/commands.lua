@@ -22,7 +22,7 @@ augroup END
 
 augroup set_two_space_tabs
     autocmd!
-    autocmd Filetype html,css,scss,typescript,javascript,json setlocal tabstop=2
+    autocmd Filetype html,css,scss,typescript,typescriptreact,javascript,json setlocal tabstop=2
 augroup END
 
 ]])

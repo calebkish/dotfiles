@@ -35,8 +35,8 @@ telescope.setup {
 }
 telescope.load_extension('fzy_native')
 
--- lib.map('n', '<C-p>', ':lua require(\'telescope.builtin\').git_files()<CR>')
-lib.map('n', '<C-p>', '<Cmd>lua require(\'telescope.builtin\').find_files()<CR>')
+lib.map('n', '<C-p>', ':lua require(\'telescope.builtin\').git_files()<CR>')
+-- lib.map('n', '<C-p>', '<Cmd>lua require(\'telescope.builtin\').find_files()<CR>')
 lib.map('n', '<Leader>fg', '<Cmd>lua require(\'telescope.builtin\').live_grep()<CR>')
 lib.map('n', '<Leader>fb', '<Cmd>lua require(\'telescope.builtin\').buffers()<CR>')
 -- lib.map('n', '<Leader>fh', '<Cmd>lua require(\'telescope.builtin\').help_tags()<CR>')

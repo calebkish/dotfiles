@@ -30,13 +30,13 @@ require('packer').startup(function(use)
     use('hrsh7th/cmp-nvim-lsp-signature-help')
 
 
-    use('mfussenegger/nvim-dap')
-    use('rcarriga/nvim-dap-ui')
-    use('theHamsta/nvim-dap-virtual-text')
+    -- use('mfussenegger/nvim-dap')
+    -- use('rcarriga/nvim-dap-ui')
+    -- use('theHamsta/nvim-dap-virtual-text')
 
     -- use('pwntester/octo.nvim')
 
-    use('tpope/vim-fugitive')
+    -- use('tpope/vim-fugitive')
 
     use('lewis6991/impatient.nvim')
 
@@ -51,14 +51,14 @@ require('packer').startup(function(use)
     use('petertriho/nvim-scrollbar')
 
     -- doesn't work for some reason
-    use({
-        'tpope/vim-scriptease',
-        cmd = {
-            'Messages', --view messages in quickfix list
-            'Verbose', -- view verbose output in preview window.
-            'Time', -- measure how long it takes to run some stuff.
-        },
-    })
+    -- use({
+    --     'tpope/vim-scriptease',
+    --     cmd = {
+    --         'Messages', --view messages in quickfix list
+    --         'Verbose', -- view verbose output in preview window.
+    --         'Time', -- measure how long it takes to run some stuff.
+    --     },
+    -- })
 end)
 
 require('scrollbar').setup()

@@ -60,9 +60,11 @@ require('nvim-tree').setup({
                 { key = 'L', action = 'vsplit_preview', action_cb = vsplit_preview },
                 { key = 'h', action = 'close_node' },
                 { key = 'H', action = 'collapse_all', action_cb = collapse_all },
-                { key = '<Esc>', action = 'close' }
+                { key = '<Esc>', action = 'close' },
+                { key = '<C-t>', action = '' },
             }
-        }
+        },
+        preserve_window_proportions = true,
     },
     renderer = {
         highlight_git = false,

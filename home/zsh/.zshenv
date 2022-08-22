@@ -9,10 +9,11 @@ export NVM_BIN="$NVM_DIR/versions/node/$DEFAULT_NODE_VERSION/bin"
 
 # -U option: For arrays, keep only the first occurrence of each duplicated value
 typeset -U PATH path
+
 path=(
     "$HOME/.local/bin"
-    "$HOME/.luarocks/bin"
     "$HOME/.local/user-bin"
+    "$HOME/.luarocks/bin"
     "$HOME/.cargo/bin"
     "$HOME/.local/npm-bin/node_modules/.bin"
     "$NVM_BIN"
