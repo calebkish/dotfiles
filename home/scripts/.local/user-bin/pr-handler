@@ -30,6 +30,8 @@ REPOS_DIR="/home/caleb/git"
 
 URL="$1"
 
+echo "$URL"
+
 ESCAPED_GH_ORIGIN="$(echo "$GH_ORIGIN" | sed -r "s|\/|\\\/|g" | sed -r "s|\.|\\\.|g")"
 ALPHANUM_GROUP="([A-Za-z0-9_.-]+)"
 NUM_GROUP="([0-9]+)"
@@ -40,8 +42,8 @@ REPO_NAME="$(echo "$URL" | sed -r -n "s|$URL_PATTERN|\2|p")"
 # TAB="$(echo "$URL" | sed -r -n "s|$URL_PATTERN|\3|p")"
 # PR_NUM="$(echo "$URL" | sed -r -n "s|$URL_PATTERN|\4|p")"
 
-# echo "$ORG_NAME"
-# echo "$REPO_NAME"
+echo "$ORG_NAME"
+echo "$REPO_NAME"
 
 if [ ! "$ORG_NAME" -o ! "$REPO_NAME" ]; then
     echo "ERROR: Provided URL is invalid or is missing organization and/or repo name in path. Exiting..."
