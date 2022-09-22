@@ -1,7 +1,10 @@
 local lib = require('lib.lib')
 
+local tree = require('nvim-tree')
 local tree_lib = require('nvim-tree.lib')
 local tree_view = require('nvim-tree.view')
+
+local is_vinegar = true
 
 local function collapse_all()
     require('nvim-tree.actions.tree-modifiers.collapse-all').fn()
@@ -9,7 +12,7 @@ end
 
 local function edit_or_open()
     -- open as vsplit on current node
-    local action = 'edit'
+    local action = is_vinegar and 'edit_in_place' or 'edit'
     local node = tree_lib.get_node_at_cursor()
 
     -- Just copy what's done normally with vsplit
@@ -48,7 +51,7 @@ local function vsplit_preview()
     tree_view.focus()
 end
 
-require('nvim-tree').setup({
+tree.setup({
     open_on_setup_file = false,
     hijack_cursor = false,
     view = {
@@ -56,11 +59,19 @@ require('nvim-tree').setup({
         width = 35,
         mappings = {
             list = {
-                { key = 'l', action = 'edit', action_cb = edit_or_open },
-                { key = 'L', action = 'vsplit_preview', action_cb = vsplit_preview },
+                --[[ { key = 'l', action = 'edit', action_cb = edit_or_open }, ]]
+                { key = 'l', action = 'edit_in_place', action_cb = edit_or_open },
+                { key = '<CR>', action = 'edit_in_place', action_cb = edit_or_open },
+                --[[ { key = 'L', action = 'vsplit_preview', action_cb = vsplit_preview }, ]]
                 { key = 'h', action = 'close_node' },
                 { key = 'H', action = 'collapse_all', action_cb = collapse_all },
-                { key = '<Esc>', action = 'close' },
+                { key = '<Esc>', action = 'close', action_cb = function()
+                    if is_vinegar then
+                        vim.fn.execute('normal! \\<C-o>')
+                    else
+                        tree_view.close()
+                    end
+                end },
                 { key = '<C-t>', action = '' },
             }
         },
@@ -81,6 +92,11 @@ require('nvim-tree').setup({
         enable = true,
         show_on_dirs = true,
     },
+    actions = {
+        open_file = {
+            quit_on_open = true,
+        },
+    },
 })
 
 
@@ -92,4 +108,29 @@ vim.api.nvim_set_hl(0, 'NvimTreeNormalNC', { bg = 'NONE', ctermbg = 'NONE' })
 vim.api.nvim_set_hl(0, 'NvimTreeOpenedFile', { bg = '#504945', ctermbg = 'NONE' })
 
 
-lib.map('n', '<Localleader>e', ':NvimTreeToggle<CR>')
+--[[ lib.map('n', '<Localleader>e', ':NvimTreeToggle<CR>') ]]
+
+vim.keymap.set('n', '<Localleader>E', function()
+    is_vinegar = false
+    vim.cmd('NvimTreeToggle')
+end)
+
+vim.keymap.set('n', '<Localleader>e', function()
+    is_vinegar = true
+    if tree_view.is_visible() then
+        --[[ tree_view.close() ]]
+        vim.fn.execute('normal! \\<C-o>')
+    else
+        tree.open_replacing_current_buffer(vim.loop.cwd())
+    end
+end)
+
+
+--[[ vim.keymap.set('n', '<Localleader>E', function() ]]
+--[[     if tree_view.is_visible() then ]]
+--[[         tree_view.close() ]]
+--[[     else ]]
+--[[         vim.cmd('split') ]]
+--[[         tree.open_replacing_current_buffer(vim.loop.cwd()) ]]
+--[[     end ]]
+--[[ end) ]]

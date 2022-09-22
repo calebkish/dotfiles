@@ -1,4 +1,4 @@
--- local lib = require('lib.lib')
+local lib = require('lib.lib')
 
 -- netrw will open a file in the same window
 vim.g.netrw_browse_split = 0
@@ -17,14 +17,17 @@ vim.g.netrw_preview = 1
 -- Makes netrw buffers close themselves
 vim.g.netrw_fastbrowse = 0
 
+--[[ vim.g.netrw_liststyle = 3 ]]
+
 local netrw_buf_defaults = 'nomodifiable nomodified nonumber nowrap readonly nobuflisted'
 vim.g.netrw_bufsettings = netrw_buf_defaults .. ' signcolumn=no'
 
--- lib.map('n', '<Localleader>e', ':Explore<CR>')
+lib.map('n', '<Localleader>e', ':Explore<CR>')
 
 vim.cmd([[
     function! ApplyNetrwMaps()
         nmap <buffer><silent> l <CR>
+        "nmap <buffer><silent> l P
         nmap <buffer><silent> h gg<CR>
 
         nmap <buffer><nowait><silent> q :Rexplore<CR>
