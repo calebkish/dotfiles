@@ -133,7 +133,7 @@ install-nvim-deps() {
             ~/.local/share/nvim/site/pack/packer/start/packer.nvim
     fi
 
-    # Python, HTML, CSS, JS, TS, JSON, Docker
+    # Python, HTML, CSS, JS, TS, JSON, Docker, TailwindCSS
     if [ ! -d "$HOME/.local/npm-bin" ]; then
         (
             mkdir -p ~/.local/npm-bin
@@ -142,7 +142,8 @@ install-nvim-deps() {
                 pyright \
                 dockerfile-language-server-nodejs \
                 typescript-language-server \
-                vscode-langservers-extracted
+                vscode-langservers-extracted \
+                @tailwindcss/language-server
         )
     fi
 
