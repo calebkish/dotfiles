@@ -54,8 +54,6 @@ vim.opt.matchpairs:append('<:>')
 
 vim.opt.wrap = false
 
-vim.opt.sidescroll = 1
-
 vim.opt.sidescrolloff = 5
 
 vim.opt.listchars:append('tab:>-')
@@ -70,7 +68,7 @@ vim.opt.hidden = true
 vim.opt.mouse = 'a'
 
 -- Show number on lines based on how far they are from current line, except...
-vim.opt.relativenumber = false
+vim.opt.relativenumber = true
 
 -- ...the current line will show the actual line number.
 vim.opt.number = true

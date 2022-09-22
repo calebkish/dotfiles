@@ -33,7 +33,7 @@ local on_attach = function(client, bufnr)
     lib.buf_map(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>')
     lib.buf_map(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>')
     lib.buf_map(bufnr, 'n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>')
-    lib.buf_map(bufnr, 'n', '<C-k>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>')
+    --[[ lib.buf_map(bufnr, 'n', '<C-k>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>') ]]
     lib.buf_map(bufnr, 'n', '<space>wa', '<Cmd>lua vim.lsp.buf.add_workspace_folder()<CR>')
     lib.buf_map(bufnr, 'n', '<space>wr', '<Cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>')
     lib.buf_map(bufnr, 'n', '<space>wl', '<Cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>')
@@ -59,34 +59,34 @@ capabilities = cmp.update_capabilities(capabilities)
 
 
 -- === Python ===
-lspconfig.pyright.setup{
+lspconfig.pyright.setup({
     capabilities = capabilities,
     on_attach = on_attach,
     flags = {
         debounce_text_changes = 150,
     },
-}
+})
 
 
 
 -- === C# ===
 local pid = vim.fn.getpid()
 local omnisharp_bin = "/home/caleb/.local/omnisharp/run"
-lspconfig.omnisharp.setup{
+lspconfig.omnisharp.setup({
     capabilities = capabilities,
     cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) },
     on_attach = on_attach,
     flags = {
         debounce_text_changes = 150,
     },
-}
+})
 
 -- === Lua ===
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
 local lua_ls_bin = "/home/caleb/.local/lua-language-server/bin/lua-language-server"
-lspconfig.sumneko_lua.setup{
+lspconfig.sumneko_lua.setup({
     capabilities = capabilities,
     cmd = { lua_ls_bin },
     on_attach = on_attach,
@@ -113,7 +113,7 @@ lspconfig.sumneko_lua.setup{
             },
         },
     },
-}
+})
 
 -- For: html, css, js, ts, angular, docker, markdown
 -- `mkdir ~/.npm-bin &&
@@ -122,25 +122,25 @@ lspconfig.sumneko_lua.setup{
 -- Add `~/.npm-bin/node_modules/.bin/` to PATH.
 
 -- === html ===
-lspconfig.html.setup {
+lspconfig.html.setup({
     capabilities = capabilities,
     on_attach = on_attach,
     flags = {
         debounce_text_changes = 150,
     },
-}
+})
 
 -- === css ===
-lspconfig.cssls.setup {
+lspconfig.cssls.setup({
     capabilities = capabilities,
     on_attach = on_attach,
     flags = {
         debounce_text_changes = 150,
     },
-}
+})
 
 -- === js/ts ===
-lspconfig.tsserver.setup{
+lspconfig.tsserver.setup({
     capabilities = capabilities,
     on_attach = on_attach,
     flags = {
@@ -152,10 +152,10 @@ lspconfig.tsserver.setup{
         '--tsserver-path',
         vim.loop.cwd() .. '/node_modules/.bin/tsserver'
     }
-}
+})
 
 -- === json ===
-lspconfig.jsonls.setup {
+lspconfig.jsonls.setup({
     capabilities = capabilities,
     commands = {
         Format = {
@@ -168,7 +168,7 @@ lspconfig.jsonls.setup {
     flags = {
         debounce_text_changes = 150,
     },
-}
+})
 
 
 -- === Angular ===
@@ -180,25 +180,34 @@ local ngServerCmd = {
     '--ngProbeLocations',
     vim.loop.cwd() .. '/node_modules'
 }
-lspconfig.angularls.setup{
+lspconfig.angularls.setup({
     capabilities = capabilities,
     on_attach = on_attach,
     flags = {
         debounce_text_changes = 150,
     },
+    root_dir = lsp_util.root_pattern('angular.json'),
     cmd = ngServerCmd,
     on_new_config = function(new_config, new_root_dir)
         new_config.cmd = ngServerCmd
     end,
-    root_dir = lsp_util.root_pattern('angular.json'),
-}
+})
+
+-- === Tailwind ===
+lspconfig.tailwindcss.setup({})
+
+-- === ESLint ===
+lspconfig.eslint.setup({})
+
+-- === Prisma ===
+lspconfig.prismals.setup({})
 
 -- === Docker ===
-lspconfig.dockerls.setup{
+lspconfig.dockerls.setup({
     capabilities = capabilities,
     on_attach = on_attach,
     flags = {
         debounce_text_changes = 150,
     },
-}
+})
 

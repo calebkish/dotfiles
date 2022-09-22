@@ -12,6 +12,9 @@ lib.map('n', '<Esc>', ':nohlsearch<CR>:let @/ = ""<CR>')
 lib.map('n', '<Leader>d', '"_d')
 lib.map('v', '<Leader>d', '"_d')
 
+-- replace currently selected text with default register without yanking it
+lib.map('v', '<Leader>p', '"_dP')
+
 -- x and X no longer is put in + register
 lib.map('n', 'x', '"_x')
 lib.map('n', 'X', '"_X')
