@@ -157,7 +157,7 @@ install-nvim-deps() {
                 ls-remote --exit-code --refs --sort='version:refname' --tags $REPO '*.*.*' \
                 | tail --lines=1 \
                 | cut --delimiter='/' --fields=3)
-            FILE="omnisharp-linux-x64.tar.gz"
+            FILE="omnisharp-linux-x64-net6.0.tar.gz"
             cd ~/.local/omnisharp &&
             wget "https://github.com/Omnisharp/omnisharp-roslyn/releases/download/$LATEST/$FILE" 1>/dev/null &&
             untar "$FILE" 1>/dev/null
@@ -178,6 +178,23 @@ install-nvim-deps() {
             cd ~/.local/lua-language-server &&
             wget "https://github.com/sumneko/lua-language-server/releases/download/$LATEST/$FILE" 1>/dev/null &&
             untar "$FILE" 1>/dev/null
+        )
+    fi
+
+    # netcoredbg
+    if [ ! -e "$HOME/.local/dap-adapters/netcoredbg" ]; then
+        (
+            rm -r ~/.local/dap-adapters/netcoredbg 2>/dev/null
+            mkdir -p ~/.local/dap-adapters/netcoredbg 2>/dev/null
+            REPO="https://github.com/Samsung/netcoredbg.git"
+            LATEST=$(git -c 'versionsort.suffix=-' \
+                ls-remote --exit-code --refs --sort='version:refname' --tags $REPO '*.*.*' \
+                | tail --lines=1 \
+                | cut --delimiter='/' --fields=3)
+            FILE="netcoredbg-linux-amd64.tar.gz"
+            cd ~/.local/dap-adapters/netcoredbg &&
+                wget "https://github.com/Samsung/netcoredbg/releases/download/$LATEST/$FILE" 1>/dev/null &&
+                untar "$FILE" 1>/dev/null
         )
     fi
 }

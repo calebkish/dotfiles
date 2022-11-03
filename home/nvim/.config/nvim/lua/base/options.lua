@@ -120,5 +120,10 @@ vim.opt.splitbelow = true
 
 vim.opt.splitright = true
 
--- Pop Up Menu height
+-- Pop Up Menu height.
 vim.opt.pumheight = 10
+
+vim.opt.mousescroll = 'ver:1,hor:6'
+
+-- Don't wrap in the middle of a word when `wrap` option is enabled.
+vim.opt.linebreak = true

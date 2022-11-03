@@ -18,5 +18,5 @@ require('plugins.nvim-cmp')
 require('plugins.comment')
 require('plugins.nvim-treesitter')
 require('plugins.telescope')
---[[ require('plugins.nvim-tree') ]]
+require('plugins.nvim-tree')
 require('plugins.nvim-dap')

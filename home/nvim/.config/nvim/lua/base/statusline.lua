@@ -6,6 +6,7 @@ function _G.get_status_line()
     redrawn = redrawn + 1
 
     local file = '%f'
+    local file_name = '%t'
     local buf_num = '%n'
 
     local help_flag = '%h'
@@ -30,7 +31,7 @@ function _G.get_status_line()
         return group_start .. line_num .. ',' .. col_num .. virtual_col_num .. group_end
     end)()
 
-    local left = file .. ' ' .. help_flag .. modified_flag .. readonly_flag .. ' ' .. dap_status
+    local left = file_name .. ' ' .. help_flag .. modified_flag .. readonly_flag .. ' ' .. dap_status
     local alignment_separation_point = '%='
     local right = position .. ' ' .. redrawn .. ' ' .. file_percentage
 

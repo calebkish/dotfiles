@@ -30,8 +30,8 @@ lib.map('n', 'N', 'Nzzzv')
 lib.map('n', 'J', 'mzJ`z')
 
 -- Keep things centered when moving to next/prev quick fix list item
-lib.map('n', '<C-j>', ':cnext<CR>zzzv')
-lib.map('n', '<C-k>', ':cprev<CR>zzzv')
+-- lib.map('n', '<C-j>', ':cnext<CR>zzzv')
+-- lib.map('n', '<C-k>', ':cprev<CR>zzzv')
 
 -- Undo breakpoints (i_CTRL-G will break the current undo sequence & start an
 -- undo sequence)
@@ -49,12 +49,6 @@ lib.map('v', 'J', ":m '>+1<CR>gv=gv")
 lib.map('v', 'K', ":m '<-2<CR>gv=gv")
 lib.map('n', '<Leader>j', ':m .+1<CR>==')
 lib.map('n', '<Leader>k', ':m .-2<CR>==')
-
--- See global marks
--- Scuffed atm because ":norm `" doesn't show in prompt after pressing `s`
--- lib.map('n', 's', ':marks ABCDEFGHIJKLMNOPQRSTUVWXYZ<CR>:norm `')
--- See buffers
--- lib.map('n', 'S', ':ls<CR>')
 
 lib.map('', '<C-h>', ':wincmd h<CR>')
 lib.map('', '<C-j>', ':wincmd j<CR>')
@@ -86,3 +80,24 @@ nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> 
 ]])
 
 lib.map('n', '<Leader>x', ':silent write<CR>:source %<CR>')
+
+
+local opts = { noremap = true, silent = true }
+local switcher = require('nvim-quick-switcher')
+vim.keymap.set('n', '<Leader>ot', function()
+    switcher.find('.+test|.+spec', { regex = true, prefix='full' })
+end, opts)
+vim.keymap.set('n', '<Leader>os', function()
+    switcher.find('.+css|.+scss|.+sass', { regex = true, prefix='full' })
+end, opts)
+vim.keymap.set('n', '<Leader>oc', function()
+    switcher.find('.component.ts')
+end, opts)
+vim.keymap.set('n', '<Leader>oh', function()
+    switcher.find('.component.html')
+end, opts)
+
+-- Keep cursor stationary after yanking
+vim.cmd([[
+vnoremap <expr>y "my\"" . v:register . "y`y"
+]])
