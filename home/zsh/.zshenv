@@ -4,7 +4,7 @@
 # This file will always be read
 
 export NVM_DIR="$HOME/.nvm"
-export DEFAULT_NODE_VERSION="v16.15.1"
+export DEFAULT_NODE_VERSION="v16.18.0"
 export NVM_BIN="$NVM_DIR/versions/node/$DEFAULT_NODE_VERSION/bin"
 
 # -U option: For arrays, keep only the first occurrence of each duplicated value
@@ -16,6 +16,7 @@ path=(
     "$HOME/.luarocks/bin"
     "$HOME/.cargo/bin"
     "$HOME/.local/npm-bin/node_modules/.bin"
+    "$HOME/.dotnet/tools"
     "$NVM_BIN"
     "$path[@]"
 )
