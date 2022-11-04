@@ -48,52 +48,49 @@ local function ng_generate(node, generate_type)
         absolute_path = node.parent.absolute_path
     end
 
-    local path = vim.fn.substitute(absolute_path, vim.loop.cwd() .. '/', '', '')
+    local path_in_cwd = vim.fn.substitute(absolute_path, vim.loop.cwd() .. '/', '', '')
 
     local angular_json_path = vim.loop.cwd() .. '/angular.json'
-    local decode_ok, result = pcall(vim.fn.json_decode, utils.read_file(angular_json_path))
+    local decode_ok, angular_json = pcall(vim.fn.json_decode, utils.read_file(angular_json_path))
 
     if (not decode_ok) then
         P('Could not decode angular.json')
         return
     end
 
-    local project_roots = {}
-    for k,v in pairs(result.projects) do
-        project_roots[k] = v.sourceRoot .. '/app'
+    local project_app_paths = {}
+    for project_name, project_config in pairs(angular_json.projects) do
+        project_app_paths[project_name] = project_config.sourceRoot .. '/app' -- could be `src/app` or `projects/<project>/src/app`
     end
 
-    local project = nil
-    for k,v in pairs(project_roots) do
-        -- P(v)
-        local pattern = vim.regex('^' .. v)
-        local match = pattern:match_str(path)
+    local occupied_project = nil
+    for project_name, app_path in pairs(project_app_paths) do
+        local starts_with_app_path_pattern = vim.regex('^' .. app_path)
+        local match = starts_with_app_path_pattern:match_str(path_in_cwd)
         if (match) then
-            project = k
+            occupied_project = project_name
         end
     end
 
-    if (project == nil) then
+    if (occupied_project == nil) then
         P('Error: Not in a project')
         return
     end
 
-    -- local generate_name = vim.fn.input("Name: ", "", "file")
     local input_ok, generate_name = pcall(vim.fn.input, 'Name: ', '', 'file')
     if (not input_ok) then
         return
     end
 
-    local idk = vim.fn.substitute(path, project_roots[project], '', '')
-    local idk2 = idk .. '/' .. generate_name
-
-    if generate_type == 'service' then
-        idk2 = idk2 .. '/' .. generate_name
+    local root_relative_path = vim.fn.substitute(path_in_cwd, project_app_paths[occupied_project], '', '') .. '/' .. generate_name
+    if generate_type == 'component' then
+        root_relative_path = project_app_paths[occupied_project] .. '/' .. generate_name
     end
 
+    P(root_relative_path)
     Job:new({
         command = 'npm',
-        args = { 'run', 'ng', 'generate', generate_type, '--', '--project', project, idk2 }
+        args = { 'run', 'ng', 'generate', generate_type, '--', '--project', occupied_project, '--skip-import', root_relative_path }
     }):sync()
 end
 
@@ -121,6 +118,15 @@ tree.setup({
                 { key = '<Leader>gs', action = 'generate_service', action_cb = function(node)
                     ng_generate(node, 'service')
                 end },
+
+                { key = '<Leader>gd', action = 'generate_directive', action_cb = function(node)
+                    ng_generate(node, 'directive')
+                end },
+
+                { key = '<Leader>gp', action = 'generate_pipe', action_cb = function(node)
+                    ng_generate(node, 'pipe')
+                end },
+
 
                 { key = '<C-t>', action = '', },
                 { key = '<C-e>', action = '', },
