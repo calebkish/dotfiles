@@ -40,6 +40,12 @@ vim.api.nvim_create_user_command('JSONFormat', function(args)
     vim.cmd(range .. filter_cmd .. shell_cmd)
 end, { nargs = 0, range = true })
 
+vim.cmd([[
+command! -nargs=1 -complete=command Redir
+      \ :execute "new | put=execute(\'" . <q-args> . "\') | setl nomodified"
+]])
+
+
 -- View command output in a scratch window.
 vim.cmd([[
 function! s:Scratch (command, ...)
@@ -48,10 +54,15 @@ function! s:Scratch (command, ...)
    set nomore
    execute a:command
    redir END
+
    let &more = saveMore
+
    call feedkeys("\<cr>")
+
    new | setlocal buftype=nofile bufhidden=hide noswapfile
+
    put=lines
+
    if a:0 > 0
       execute 'vglobal/'.a:1.'/delete'
    endif

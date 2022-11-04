@@ -343,6 +343,8 @@ globalkeys = gears.table.join(
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"})
+    -- awful.key({ modkey }, "p", function () awful.spawn("dmenu_run") end,
+    --           { description = "show the menubar", group = "launcher"})
 )
 
 clientkeys = gears.table.join(

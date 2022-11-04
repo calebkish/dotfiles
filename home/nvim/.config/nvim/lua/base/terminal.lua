@@ -1,14 +1,19 @@
 local lib = require('lib.lib')
 local U = require('pepita.utils')
 
+local function is_special_buffer(buf_name)
+    return (
+        vim.startswith(buf_name, 'term://') or
+        vim.startswith(buf_name, '[dap-terminal]')
+    )
+end
+
 local function get_buffers()
     local buffers = {}
     local len = 0
-    local vim_fn = vim.fn
-    local buflisted = vim_fn.buflisted
 
-    for buffer = 1, vim_fn.bufnr('$') do
-        if buflisted(buffer) == 1 then
+    for buffer = 1, vim.fn.bufnr('$') do
+        if vim.fn.buflisted(buffer) == 1 then
             len = len + 1
             buffers[len] = buffer
         end
@@ -23,9 +28,14 @@ local function get_term_buffers()
 
     return U.list_filter(buf_nums, function(buf_num)
         local buf_name = vim.fn.bufname(buf_num)
-        return vim.startswith(buf_name, 'term://')
+        return is_special_buffer(buf_name)
     end)
 end
+
+
+vim.api.nvim_create_user_command('GetTermBufs', function()
+    P(get_term_buffers())
+end, { nargs = 0 })
 
 
 local function get_term_status_line()
@@ -54,8 +64,8 @@ local function get_win_with_term_buf()
 
     for _, win in ipairs(wins) do
         local buf = vim.api.nvim_win_get_buf(win)
-        local buf_name = vim.api.nvim_buf_get_name(buf)
-        if vim.startswith(buf_name, 'term://') then
+        local buf_name = vim.fn.bufname(buf)
+        if is_special_buffer(buf_name) then
             return win
         end
     end
@@ -106,10 +116,20 @@ end
 local group_id = vim.api.nvim_create_augroup('terminal_group', { clear = true })
 vim.api.nvim_create_autocmd({ 'BufEnter' }, {
     group = group_id,
-    pattern = { 'term://*' },
+    pattern = {
+        'term://*',
+        '\\[dap-terminal\\]*'
+    },
     callback = function()
-        vim.fn.execute("normal! i")
+        local data = {
+            buf = vim.fn.expand('<abuf>'),
+            file = vim.fn.expand('<afile>'),
+            match = vim.fn.expand('<amatch>'),
+        }
 
+        --[[ if vim.startswith(data.file, 'term://') then ]]
+        --[[     vim.fn.execute("normal! i") ]]
+        --[[ end ]]
 
         lib.buf_map(0, '', '<C-t>', '<Nop>', { callback = function()
             local win = get_win_with_term_buf()

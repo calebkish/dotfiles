@@ -3,7 +3,11 @@ require'nvim-treesitter.configs'.setup {
     ignore_install = {'fusion', 'jsonc'}, -- List of parsers to ignore installing
     highlight = {
         enable = true, -- false will disable the whole extension
-        disable = {'markdown', 'help', 'html'}, -- list of languages that will be disabled
+        disable = { -- list of languages that will be disabled
+            'markdown',
+            'help',
+            -- 'html'
+        },
         additional_vim_regex_highlighting = false,
         -- use_languagetree = true,
     },
@@ -16,6 +20,28 @@ require'nvim-treesitter.configs'.setup {
     context_commentstring = {
         enable = true,
         enable_autocmd = false,
+        config = {
+            typescript = {
+                jsx_element = '{/* %s */}',
+                jsx_fragment = '{/* %s */}',
+                jsx_attribute = '// %s',
+                comment = '// %s',
+                __default = '// %s',
+                __multiline = '/* %s */',
+            },
+            javascript = {
+                jsx_element = '{/* %s */}',
+                jsx_fragment = '{/* %s */}',
+                jsx_attribute = '// %s',
+                comment = '// %s',
+                __default = '// %s',
+                __multiline = '/* %s */',
+            },
+            lua = {
+                __default = '-- %s',
+                __multiline = '--[[ %s ]]',
+            }
+        }
     },
     playground = {
         enable = false,
@@ -92,4 +118,3 @@ require'nvim-treesitter.configs'.setup {
 
 vim.api.nvim_win_set_option(0, 'foldmethod', 'expr')
 vim.api.nvim_win_set_option(0, 'foldexpr', 'nvim_treesitter#foldexpr()')
-

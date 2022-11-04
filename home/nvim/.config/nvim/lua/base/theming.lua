@@ -28,6 +28,7 @@ vim.g.gruvbox_baby_highlights = {
     Visual = {              fg = 'NONE',    bg = '#365468', style = 'NONE' },
     markdownCodeBlock = {   fg = 'NONE',    bg = 'NONE',    style = 'NONE' },
     htmlEndTag = {          fg = '#87AF87', bg = 'NONE',    style = 'NONE' },
+    TabLine = {             fg = '#d4aa80', bg = '#282828', style = 'NONE' },
 }
 
 local colorscheme = 'gruvbox-baby'
