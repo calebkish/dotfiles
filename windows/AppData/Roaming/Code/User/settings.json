@@ -4,26 +4,40 @@
     "editor.minimap.enabled": false,
     "csharp.referencesCodeLens.enabled": false,
     "editor.cursorSurroundingLines": 5,
-    "editor.lineNumbers": "on",
+    "editor.lineNumbers": "relative",
+    "editor.renderWhitespace": "trailing",
+    "vim.insertModeKeyBindingsNonRecursive": [],
+    "vim.incsearch": true,
+    "vim.useSystemClipboard": true,
+    "vim.useCtrlKeys": true,
+    "vim.leader": "<space>",
+    "vim.handleKeys": {},
+    "vim.joinspaces": false,
+    "vim.autoindent": true,
+    "vim.hlsearch": true,
     "vim.visualModeKeyBindingsNonRecursive": [
         {
-            "before": [
-                "J",
-            ],
-            "commands": [
-                "editor.action.moveLinesDownAction"
-            ]
+            "before": ["J"],
+            "commands": ["editor.action.moveLinesDownAction"]
         },
         {
-            "before": [
-                "K",
-            ],
-            "commands": [
-                "editor.action.moveLinesUpAction"
-            ]
+            "before": ["K"],
+            "commands": ["editor.action.moveLinesUpAction"]
+        },
+        {
+            "before": ["<leader>", "p"],
+            "after": ["\"", "_", "d", "P"]
         }
     ],
     "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": ["<ctrl>", "u"],
+            "after": ["<ctrl>", "u", "z", "z"]
+        },
+        {
+            "before": ["<ctrl>", "d"],
+            "after": ["<ctrl>", "d", "z", "z"]
+        },
         {
             "before": ["<leader>", "d"],
             "after": ["\"", "_", "d"]
@@ -37,27 +51,97 @@
             "after": ["\"", "_", "X"]
         },
         {
-            "before": [],
-            "after": []
-        }
+            "before": ["g", "i"],
+            "commands": ["editor.action.goToImplementation"]
+        },
+        {
+            "before": ["g", "I"],
+            "commands": ["editor.action.peekImplementation"]
+        },
+        {
+            "before": ["g", "r"],
+            "commands": ["editor.action.referenceSearch.trigger"]
+        },
+        {
+            "before": ["g", "D"],
+            "commands": ["editor.action.peekDefinition"]
+        },
+        {
+            "before": ["g", "t"],
+            "commands": ["editor.action.goToTypeDefinition"]
+        },
+        {
+            "before": ["g", "T"],
+            "commands": ["editor.action.peekTypeDefinition"]
+        },
+        {
+            "before": ["K"],
+            "commands": ["editor.action.showHover"]
+        },
+        {
+            "before": ["escape"],
+            "commands": [":nohl"]
+        },
+        {
+            "before": ["<leader>", "o", "s"],
+            "commands": ["extension.switchStyle"]
+        },
+        {
+            "before": ["<leader>", "o", "h"],
+            "commands": ["extension.switchTemplate"]
+        },
+        {
+            "before": ["<leader>", "o", "c"],
+            "commands": ["extension.switchTs"]
+        },
+        {
+            "before": ["<leader>", "o", "t"],
+            "commands": ["extension.switchSpec"]
+        },
+        {
+            "before": ["<leader>", "1"],
+            "commands": ["workbench.action.openEditorAtIndex1"]
+        },
+        {
+            "before": ["<leader>", "2"],
+            "commands": ["workbench.action.openEditorAtIndex2"]
+        },
+        {
+            "before": ["<leader>", "3"],
+            "commands": ["workbench.action.openEditorAtIndex3"]
+        },
+        {
+            "before": ["<leader>", "4"],
+            "commands": ["workbench.action.openEditorAtIndex4"]
+        },
+        {
+            "before": ["<leader>", "5"],
+            "commands": ["workbench.action.openEditorAtIndex5"]
+        },
+        {
+            "before": ["<leader>", "6"],
+            "commands": ["workbench.action.openEditorAtIndex6"]
+        },
+        {
+            "before": ["<leader>", "7"],
+            "commands": ["workbench.action.openEditorAtIndex7"]
+        },
+        {
+            "before": ["<leader>", "8"],
+            "commands": ["workbench.action.openEditorAtIndex8"]
+        },
+        {
+            "before": ["<leader>", "9"],
+            "commands": ["workbench.action.openEditorAtIndex9"]
+        },
     ],
-    "vim.insertModeKeyBindingsNonRecursive": [],
-    "vim.incsearch": true,
-    "vim.useSystemClipboard": true,
-    "vim.useCtrlKeys": true,
-    "vim.leader": "<space>",
-    "vim.handleKeys": {},
-    "vim.joinspaces": false,
-    "vim.autoindent": true,
     "explorer.confirmDragAndDrop": false,
     "editor.rulers": [
         80
     ],
-    "update.mode": "none",
     "explorer.confirmDelete": false,
     "editor.acceptSuggestionOnEnter": "off",
     "editor.acceptSuggestionOnCommitCharacter": false,
-    "breadcrumbs.enabled": false,
     "git.autofetch": true,
     "editor.tabSize": 2,
     "editor.cursorStyle": "line",
@@ -68,19 +152,43 @@
     "explorer.openEditors.sortOrder": "alphabetical",
     "explorer.openEditors.visible": 100,
     "debug.javascript.autoAttachFilter": "disabled",
-    // "workbench.panel.opensMaximized": "always",
-    // "window.newWindowDimensions": "maximized",
     "window.title": "${rootName}${separator}${appName}",
     "http.proxyStrictSSL": false,
-    "github-enterprise.uri": "https://git.rockfin.com/",
     "explorer.compactFolders": false,
-    "javascript.preferences.importModuleSpecifier": "project-relative",
-    "workbench.editor.showTabs": false,
     "javascript.updateImportsOnFileMove.enabled": "always",
     "diffEditor.ignoreTrimWhitespace": false,
-    "editor.linkedEditing": true,
-    "typescript.updateImportsOnFileMove.enabled": "always",
-    "typescript.preferences.importModuleSpecifier": "project-relative",
     "window.newWindowDimensions": "inherit",
     "githubPullRequests.fileListLayout": "tree",
+    "diffEditor.renderSideBySide": false,
+    "gitlens.currentLine.enabled": false,
+    "editor.codeLens": false,
+    "workbench.editor.mouseBackForwardToNavigate": false,
+    "gitlens.codeLens.enabled": true,
+    "gitlens.codeLens.recentChange.enabled": false,
+    "gitlens.codeLens.authors.enabled": false,
+    "githubIssues.issueCompletions.enabled": false,
+    "githubIssues.userCompletions.enabled": false,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "typescript.preferences.quoteStyle": "single",
+    "html.autoClosingTags": false,
+    "redhat.telemetry.enabled": false,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "nxConsole.enableTelemetry": false,
+    "files.exclude": {
+        "node_modules": true,
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "breadcrumbs.enabled": false,
+    "editor.stickyScroll.enabled": true,
+    "workbench.list.smoothScrolling": true,
+    "editor.smoothScrolling": true,
+    "workbench.editor.tabSizing": "shrink",
+    "workbench.layoutControl.enabled": false,
+    "workbench.editor.showTabs": false,
+    "window.menuBarVisibility": "toggle",
+    "dotnetAcquisitionExtension.enableTelemetry": false
 }
